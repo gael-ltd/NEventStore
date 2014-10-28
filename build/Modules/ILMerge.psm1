@@ -8,13 +8,12 @@ function Merge-Assemblies {
 		$outputFile,
 		$exclude,
 		$keyfile,
-		$targetPlatform="v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"
+		$targetPlatform="v4"
 	)
 
 	$exclude | out-file ".\exclude.txt"
 
 	$args = @(
-		"/keyfile:$keyfile",
 		"/internalize:exclude.txt", 
 		"/xmldocs",
 		"/wildcards",
