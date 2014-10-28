@@ -18,6 +18,7 @@ namespace NEventStore.Persistence.Sql
         private readonly ISqlDialect _dialect;
         private readonly int _pageSize;
         private readonly TransactionScopeOption _scopeOption;
+        private readonly TransactionOptions _transactionOptions;
         private readonly ISerialize _serializer;
         private bool _disposed;
         private int _initialized;
@@ -28,8 +29,9 @@ namespace NEventStore.Persistence.Sql
             ISqlDialect dialect,
             ISerialize serializer,
             TransactionScopeOption scopeOption,
+            TransactionOptions transactionOptions,
             int pageSize)
-            : this(connectionFactory, dialect, serializer, scopeOption, pageSize, new Sha1StreamIdHasher())
+            : this(connectionFactory, dialect, serializer, scopeOption, transactionOptions, pageSize, new Sha1StreamIdHasher())
         {}
 
         public SqlPersistenceEngine(
@@ -37,6 +39,7 @@ namespace NEventStore.Persistence.Sql
             ISqlDialect dialect,
             ISerialize serializer,
             TransactionScopeOption scopeOption,
+            TransactionOptions transactionOptions,
             int pageSize,
             IStreamIdHasher streamIdHasher)
         {
@@ -69,6 +72,7 @@ namespace NEventStore.Persistence.Sql
             _dialect = dialect;
             _serializer = serializer;
             _scopeOption = scopeOption;
+            _transactionOptions = transactionOptions;
             _pageSize = pageSize;
             _streamIdHasher = new StreamIdHasherValidator(streamIdHasher);
 
@@ -474,7 +478,7 @@ namespace NEventStore.Persistence.Sql
 
         protected virtual TransactionScope OpenCommandScope()
         {
-            return new TransactionScope(_scopeOption);
+            return new TransactionScope(_scopeOption, _transactionOptions);
         }
 
         private static bool RecoverableException(Exception e)

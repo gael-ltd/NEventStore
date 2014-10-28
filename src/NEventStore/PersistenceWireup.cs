@@ -59,6 +59,13 @@ namespace NEventStore
             return this;
         }
 
+        public virtual PersistenceWireup WithTransactionOptions(TransactionOptions options)
+        {
+            Logger.Debug(Messages.ConfiguringEngineEnlistment);
+            Container.Register(options);
+            return this;
+        }
+
         public override IStoreEvents Build()
         {
             Logger.Debug(Messages.BuildingEngine);

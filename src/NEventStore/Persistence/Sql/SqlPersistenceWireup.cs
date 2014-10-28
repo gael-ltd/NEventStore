@@ -28,6 +28,7 @@ namespace NEventStore
                 c.Resolve<ISqlDialect>(),
                 c.Resolve<IStreamIdHasher>(),
                 c.Resolve<TransactionScopeOption>(),
+                c.Resolve<TransactionOptions>(),
                 _pageSize).Build());
         }
 

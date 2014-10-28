@@ -26,7 +26,7 @@
                 .Returns(fakeDbStatement);
             A.CallTo(() => fakeDbStatement.ExecuteScalar(A<string>.Ignored)).Returns(1);
             var fakeSerialize = A.Fake<ISerialize>();
-            _sqlPersistenceEngine = new InheritedSqlPersistenceEngine(fakeConnectionFactory, fakeSqlDialect, fakeSerialize,TransactionScopeOption.Suppress, 128);
+            _sqlPersistenceEngine = new InheritedSqlPersistenceEngine(fakeConnectionFactory, fakeSqlDialect, fakeSerialize,TransactionScopeOption.Suppress, new TransactionOptions(), 128);
         }
 
         protected override void Because()
@@ -51,8 +51,8 @@
                 IConnectionFactory connectionFactory,
                 ISqlDialect dialect,
                 ISerialize serializer,
-                TransactionScopeOption scopeOption, int pageSize) 
-                : base(connectionFactory, dialect, serializer, scopeOption, pageSize)
+                TransactionScopeOption scopeOption, TransactionOptions transactionOptions, int pageSize) 
+                : base(connectionFactory, dialect, serializer, scopeOption, transactionOptions, pageSize)
             {}
 
             public IDbStatement RaisedCommand
@@ -85,6 +85,7 @@
                 A.Fake<ISqlDialect>(),
                 A.Fake<ISerialize>(),
                 TransactionScopeOption.Suppress,
+                new TransactionOptions(), 
                 128,
                 new DelegateStreamIdHasher(streamId => null));
         }
@@ -114,6 +115,7 @@
                 A.Fake<ISqlDialect>(),
                 A.Fake<ISerialize>(),
                 TransactionScopeOption.Suppress,
+                new TransactionOptions(), 
                 128,
                 new DelegateStreamIdHasher(streamId => " "));
         }
@@ -143,6 +145,7 @@
                 A.Fake<ISqlDialect>(),
                 A.Fake<ISerialize>(),
                 TransactionScopeOption.Suppress,
+                new TransactionOptions(), 
                 128,
                 new DelegateStreamIdHasher(streamId => string.Empty));
         }
@@ -172,6 +175,7 @@
                 A.Fake<ISqlDialect>(),
                 A.Fake<ISerialize>(),
                 TransactionScopeOption.Suppress,
+                new TransactionOptions(), 
                 128,
                 new DelegateStreamIdHasher(streamId => "0123456789012345678901234567890123456789X"));
         }
