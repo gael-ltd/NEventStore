@@ -65,6 +65,11 @@ namespace NEventStore.Persistence
             return ExecuteHooks(_original.GetFrom(bucketId, start));
         }
 
+        public IEnumerable<ICommit> GetStreams(params string[] streamIds)
+        {
+            return ExecuteHooks(_original.GetStreams(streamIds));
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             return ExecuteHooks(_original.GetFrom(checkpointToken));

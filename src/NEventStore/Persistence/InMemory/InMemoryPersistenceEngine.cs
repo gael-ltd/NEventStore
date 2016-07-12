@@ -44,6 +44,11 @@ namespace NEventStore.Persistence.InMemory
             return this[bucketId].GetFrom(start);
         }
 
+        public IEnumerable<ICommit> GetStreams(params string[] streamIds)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             Logger.Debug(Resources.GettingAllCommitsFromCheckpoint, checkpointToken);
