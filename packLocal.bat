@@ -1,0 +1,1 @@
+nuget pack src\.Nuget\NEventStore.nuspec -OutputDirectory %2 -Version %1 -includereferencedprojects
