@@ -71,6 +71,16 @@ namespace NEventStore.Persistence.Sql.SqlDialects
             get { return CommonSqlStatements.AppendSnapshotToCommit; }
         }
 
+        public virtual string GetUndispatchedCommits
+        {
+            get { return CommonSqlStatements.GetUndispatchedCommits; }
+        }
+
+        public virtual string MarkCommitAsDispatched
+        {
+            get { return CommonSqlStatements.MarkCommitAsDispatched; }
+        }
+
         public virtual string BucketId
         {
             get { return "@BucketId"; }

@@ -4,11 +4,12 @@
     using System.Data;
     using System.Transactions;
     using FakeItEasy;
-    using FluentAssertions;
     using NEventStore.Persistence.AcceptanceTests;
     using NEventStore.Persistence.AcceptanceTests.BDD;
+    using NEventStore.Persistence.Sql.SqlDialects;
     using NEventStore.Serialization;
     using Xunit;
+    using Xunit.Should;
 
     public class when_persisting_a_commit : SpecificationBase
     {
@@ -38,8 +39,8 @@
         [Fact]
         public void should_raise_BeforePersistCommit_event()
         {
-            _sqlPersistenceEngine.RaisedCommand.Should().NotBeNull();
-            _sqlPersistenceEngine.RaisedCommitAttempt.Should().NotBeNull();
+            _sqlPersistenceEngine.RaisedCommand.ShouldNotBeNull();
+            _sqlPersistenceEngine.RaisedCommitAttempt.ShouldNotBeNull();
         }
 
         private class InheritedSqlPersistenceEngine : SqlPersistenceEngine
@@ -98,7 +99,7 @@
         [Fact]
         public void should_raise_invalid_operation_exception()
         {
-            _exception.Should().BeOfType<InvalidOperationException>();
+            _exception.ShouldBeInstanceOf<InvalidOperationException>();
         }
     }
 
@@ -127,7 +128,7 @@
         [Fact]
         public void should_raise_invalid_operation_exception()
         {
-            _exception.Should().BeOfType<InvalidOperationException>();
+            _exception.ShouldBeInstanceOf<InvalidOperationException>();
         }
     }
 
@@ -156,7 +157,7 @@
         [Fact]
         public void should_raise_invalid_operation_exception()
         {
-            _exception.Should().BeOfType<InvalidOperationException>();
+            _exception.ShouldBeInstanceOf<InvalidOperationException>();
         }
     }
 
@@ -185,7 +186,27 @@
         [Fact]
         public void should_raise_invalid_operation_exception()
         {
-            _exception.Should().BeOfType<InvalidOperationException>();
+            _exception.ShouldBeInstanceOf<InvalidOperationException>();
+        }
+    }
+
+    public class when_getting_checkpoint_with_null_token : SpecificationBase
+    {
+        private ICheckpoint _checkpoint;
+
+        protected override void Because()
+        {
+            var persistence = new SqlPersistenceFactory("Connection",
+                new BinarySerializer(),
+                new MsSqlDialect()).Build();
+
+            _checkpoint = persistence.GetCheckpoint();
+        }
+
+        [Fact]
+        public void should_not_be_null()
+        {
+            _checkpoint.ShouldNotBeNull();
         }
     }
 }

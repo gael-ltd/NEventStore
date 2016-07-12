@@ -1,6 +1,6 @@
 properties {
     $base_directory = Resolve-Path ..
-    $publish_directory = "$base_directory\publish-net45"
+    $publish_directory = "$base_directory\publish-net40"
     $build_directory = "$base_directory\build"
     $src_directory = "$base_directory\src"
     $output_directory = "$base_directory\output"
@@ -11,8 +11,8 @@ properties {
     $build_number = 0
     $assemblyInfoFilePath = "$src_directory\VersionAssemblyInfo.cs"
 
-    $xunit_path = "$src_directory\\packages\xunit.runners.1.9.2\tools\xunit.console.clr4.exe"
-    $ilMergeModule.ilMergePath = "$src_directory\packages\ilmerge.2.13.0307\ILMerge.exe"
+    $xunit_path = "$base_directory\bin\xunit.runners.1.9.1\tools\xunit.console.clr4.exe"
+    $ilMergeModule.ilMergePath = "$base_directory\bin\ilmerge-bin\ILMerge.exe"
     $nuget_dir = "$src_directory\.nuget"
 
     if($runPersistenceTests -eq $null) {
@@ -34,7 +34,7 @@ task UpdateVersion {
 
 task Compile {
 	exec { msbuild /nologo /verbosity:quiet $sln_file /p:Configuration=$target_config /t:Clean }
-	exec { msbuild /nologo /verbosity:quiet $sln_file /p:Configuration=$target_config /p:TargetFrameworkVersion=v4.5 }
+	exec { msbuild /nologo /verbosity:quiet $sln_file /p:Configuration=$target_config /p:TargetFrameworkVersion=v4.0 }
 }
 
 task Test -depends RunUnitTests, RunPersistenceTests, RunSerializationTests
@@ -69,7 +69,6 @@ task Package -depends Build, PackageNEventStore {
 
 task PackageNEventStore -depends Clean, Compile {
 	mkdir "$publish_directory\bin" | out-null
-	"H1"
 	Merge-Assemblies -outputFile "$publish_directory/bin/NEventStore.dll" -files @(
 		"$src_directory/NEventStore/bin/$target_config/NEventStore.dll",
 		"$src_directory/NEventStore/bin/$target_config/System.Reactive.Interfaces.dll",
@@ -77,7 +76,6 @@ task PackageNEventStore -depends Clean, Compile {
 		"$src_directory/NEventStore/bin/$target_config/System.Reactive.Linq.dll",
 		"$src_directory/NEventStore/bin/$target_config/Newtonsoft.Json.dll"
 	)
-	"H2"
 }
 
 task Clean {

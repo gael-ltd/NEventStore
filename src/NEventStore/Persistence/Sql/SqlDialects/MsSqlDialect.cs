@@ -43,6 +43,11 @@ namespace NEventStore.Persistence.Sql.SqlDialects
             get { return CommonTableExpressionPaging(base.GetCommitsFromCheckpoint); }
         }
 
+        public override string GetUndispatchedCommits
+        {
+            get { return CommonTableExpressionPaging(base.GetUndispatchedCommits); }
+        }
+
         public override string GetStreamsRequiringSnapshots
         {
             get { return NaturalPaging(base.GetStreamsRequiringSnapshots); }

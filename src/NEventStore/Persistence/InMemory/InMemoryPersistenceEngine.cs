@@ -80,6 +80,19 @@ namespace NEventStore.Persistence.InMemory
             return this[attempt.BucketId].Commit(attempt, new LongCheckpoint(Interlocked.Increment(ref _checkpoint)));
         }
 
+        public IEnumerable<ICommit> GetUndispatchedCommits()
+        {
+            ThrowWhenDisposed();
+            return _buckets.Values.SelectMany(b => b.GetUndispatchedCommits());
+        }
+
+        public void MarkCommitAsDispatched(ICommit commit)
+        {
+            ThrowWhenDisposed();
+            Logger.Debug(Resources.MarkingAsDispatched, commit.CommitId);
+            this[commit.BucketId].MarkCommitAsDispatched(commit);
+        }
+
         public IEnumerable<IStreamHead> GetStreamsToSnapshot(string bucketId, int maxThreshold)
         {
             ThrowWhenDisposed();
@@ -302,6 +315,7 @@ namespace NEventStore.Persistence.InMemory
             private readonly ICollection<IStreamHead> _heads = new LinkedList<IStreamHead>();
             private readonly ICollection<ISnapshot> _snapshots = new LinkedList<ISnapshot>();
             private readonly IDictionary<Guid, DateTime> _stamps = new Dictionary<Guid, DateTime>();
+            private readonly ICollection<ICommit> _undispatched = new LinkedList<ICommit>();
 
             public IEnumerable<ICommit> GetFrom(string streamId, int minRevision, int maxRevision)
             {
@@ -367,6 +381,7 @@ namespace NEventStore.Persistence.InMemory
                     _commits.Add(commit);
                     _potentialDuplicates.Add(new IdentityForDuplicationDetection(commit));
                     _potentialConflicts.Add(new IdentityForConcurrencyConflictDetection(commit));
+                    _undispatched.Add(commit);
                     IStreamHead head = _heads.FirstOrDefault(x => x.StreamId == commit.StreamId);
                     _heads.Remove(head);
                     Logger.Debug(Resources.UpdatingStreamHead, commit.StreamId);
@@ -381,6 +396,23 @@ namespace NEventStore.Persistence.InMemory
                 if (_potentialDuplicates.Contains(new IdentityForDuplicationDetection(attempt)))
                 {
                     throw new DuplicateCommitException();
+                }
+            }
+
+            public IEnumerable<ICommit> GetUndispatchedCommits()
+            {
+                lock (_commits)
+                {
+                    Logger.Debug(Resources.RetrievingUndispatchedCommits, _commits.Count);
+                    return _commits.Where(c => _undispatched.Contains(c)).OrderBy(c => c.CommitSequence);
+                }
+            }
+
+            public void MarkCommitAsDispatched(ICommit commit)
+            {
+                lock (_commits)
+                {
+                    _undispatched.Remove(commit);
                 }
             }
 

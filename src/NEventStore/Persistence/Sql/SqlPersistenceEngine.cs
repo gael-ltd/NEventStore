@@ -107,10 +107,6 @@ namespace NEventStore.Persistence.Sql
                     return query
                         .ExecutePagedQuery(statement, _dialect.NextPageDelegate)
                         .Select(x => x.GetCommit(_serializer, _dialect));
-
-                    /* return query
-                         .ExecutePagedQuery(statement, (q, r) => {})
-                         .Select(x => x.GetCommit(_serializer, _dialect));*/
                 });
         }
 
@@ -149,7 +145,11 @@ namespace NEventStore.Persistence.Sql
 
         public ICheckpoint GetCheckpoint(string checkpointToken)
         {
-            return string.IsNullOrWhiteSpace(checkpointToken) ? null : LongCheckpoint.Parse(checkpointToken);
+            if(string.IsNullOrWhiteSpace(checkpointToken))
+            {
+                return new LongCheckpoint(-1);
+            }
+            return LongCheckpoint.Parse(checkpointToken);
         }
 
         public virtual IEnumerable<ICommit> GetFromTo(string bucketId, DateTime start, DateTime end)
@@ -195,6 +195,28 @@ namespace NEventStore.Persistence.Sql
                 throw new ConcurrencyException(e.Message, e);
             }
             return commit;
+        }
+
+        public virtual IEnumerable<ICommit> GetUndispatchedCommits()
+        {
+            Logger.Debug(Messages.GettingUndispatchedCommits);
+            return
+                ExecuteQuery(query => query.ExecutePagedQuery(_dialect.GetUndispatchedCommits, (q, r) => { }))
+                    .Select(x => x.GetCommit(_serializer, _dialect))
+                    .ToArray(); // avoid paging
+        }
+
+        public virtual void MarkCommitAsDispatched(ICommit commit)
+        {
+            Logger.Debug(Messages.MarkingCommitAsDispatched, commit.CommitId);
+            string streamId = _streamIdHasher.GetHash(commit.StreamId);
+            ExecuteCommand(cmd =>
+                {
+                    cmd.AddParameter(_dialect.BucketId, commit.BucketId, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.StreamId, streamId, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.CommitSequence, commit.CommitSequence);
+                    return cmd.ExecuteWithoutExceptions(_dialect.MarkCommitAsDispatched);
+                });
         }
 
         public virtual IEnumerable<IStreamHead> GetStreamsToSnapshot(string bucketId, int maxThreshold)

@@ -118,7 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InitializeStorage" xml:space="preserve">
-    <value>CREATE TABLE [dbo].[Commits]
+    <value>IF EXISTS(SELECT * FROM sysobjects WHERE name='Commits' AND xtype = 'U') RETURN;
+CREATE TABLE [dbo].[Commits]
 (
        [BucketId] [varchar](40) NOT NULL,
        [StreamId] [char](40) NOT NULL,
@@ -128,6 +129,7 @@
        [CommitId] [uniqueidentifier] NOT NULL CHECK ([CommitId] != 0x0),
        [CommitSequence] [int] NOT NULL CHECK ([CommitSequence] &gt; 0),
        [CheckpointNumber] [bigint] IDENTITY NOT NULL,
+       [Dispatched] [bit] NOT NULL DEFAULT (0),
        [Headers] [varbinary](MAX) NULL CHECK ([Headers] IS NULL OR DATALENGTH([Headers]) &gt; 0),
        [Payload] [varbinary](MAX) NOT NULL CHECK (DATALENGTH([Payload]) &gt; 0),
        CONSTRAINT [PK_Commits] PRIMARY KEY CLUSTERED ([CheckpointNumber])
@@ -142,6 +144,7 @@ ELSE
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Commits_CommitSequence] ON Commits (BucketId, StreamId, CommitSequence);
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Commits_CommitId] ON [dbo].[Commits] ([BucketId], [StreamId], [CommitId]);
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Commits_Revisions] ON [dbo].[Commits] ([BucketId], [StreamId], [StreamRevision], [Items]);
+CREATE INDEX [IX_Commits_Dispatched] ON [dbo].[Commits] ([Dispatched]);
 CREATE INDEX [IX_Commits_Stamp] ON Commits ([CommitStamp]);
 
 CREATE TABLE [dbo].[Snapshots]

@@ -1,10 +1,10 @@
 ﻿namespace NEventStore
 {
-    using FluentAssertions;
     using NEventStore.Persistence.AcceptanceTests;
     using NEventStore.Persistence.AcceptanceTests.BDD;
     using System;
     using Xunit;
+    using Xunit.Should;
 
     public class DefaultSerializationWireupTests
     {
@@ -13,7 +13,6 @@
             private Wireup _wireup;
             private Exception _exception;
             private IStoreEvents _eventStore;
-
             protected override void Context()
             {
                 _wireup = Wireup.Init()
@@ -34,10 +33,7 @@
             [Fact]
             public void should_not_throw_an_argument_null_exception()
             {
-                if (_exception != null)
-                {
-                    _exception.GetType().Should().NotBe<ArgumentNullException>();
-                }
+                _exception.ShouldNotBeInstanceOf<ArgumentNullException>();
             }
         }
     }
