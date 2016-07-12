@@ -188,11 +188,7 @@ namespace NEventStore
             Logger.Debug(Resources.PersistingCommit, commitId, StreamId);
             ICommit commit = _persistence.Commit(attempt);
 
-            if (commit != null)
-            {
-                PopulateStream(StreamRevision + 1, attempt.StreamRevision, new[] {commit});
-            }
-
+            PopulateStream(StreamRevision + 1, attempt.StreamRevision, new[] { commit });
             ClearChanges();
         }
 
