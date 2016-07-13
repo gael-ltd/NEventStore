@@ -13,8 +13,11 @@
     <language>es-US</language>
     <tags>events, event sourcing, cqrs, storage, persistence, database</tags>
     <releaseNotes></releaseNotes>
+    <references>
+      <reference file="NEventStore.dll" />
+    </references>
   </metadata>
   <files>
-    <file src="..\..\publish-net40\bin\**" target="lib\net40"/>
+    <file src="..\..\publish-net40\bin\**" target="lib\net45"/>
   </files>
 </package>
