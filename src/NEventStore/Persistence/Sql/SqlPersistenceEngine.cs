@@ -117,8 +117,10 @@ namespace NEventStore.Persistence.Sql
 
             return ExecuteQuery(query =>
             {
-                string statement = string.Format(_dialect.GetStreams, "'" + string.Join("','", streamIds) + "'", 5000, int.MaxValue);
+                string statement = string.Format(_dialect.GetStreams, "('" + string.Join("','", streamIds) + "')");
+                // query.AddParameter("@StreamIds", "'" + string.Join("','", streamIds) + "'", DbType.);
                 query.AddParameter(_dialect.CommitSequence, 0);
+                query.AddParameter(_dialect.StreamRevision, int.MaxValue);
 
                 return query
                     .ExecutePagedQuery(statement, _dialect.NextPageDelegate)

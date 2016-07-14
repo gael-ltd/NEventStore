@@ -233,11 +233,11 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
     <value>SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
   FROM Commits
  WHERE BucketId = 'default'
-   AND StreamId IN ({0})
+   AND StreamId IN  {0}
    AND StreamRevision &gt;= 0
-   AND(StreamRevision - Items) &lt; {2}
+   AND(StreamRevision - Items) &lt; @StreamRevision
    AND CommitSequence &gt; 0
  ORDER BY CommitSequence
- LIMIT @Limit;</value>
+  LIMIT @Limit OFFSET @Skip;</value>
   </data>
 </root>

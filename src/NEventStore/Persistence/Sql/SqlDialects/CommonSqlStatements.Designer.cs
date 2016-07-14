@@ -181,12 +181,12 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
         ///   Looks up a localized string similar to SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
         ///  FROM Commits
         /// WHERE BucketId = &apos;default&apos;
-        ///   AND StreamId IN ({0})
+        ///   AND StreamId IN  {0}
         ///   AND StreamRevision &gt;= 0
-        ///   AND(StreamRevision - Items) &lt; {2}
+        ///   AND(StreamRevision - Items) &lt; @StreamRevision
         ///   AND CommitSequence &gt; 0
         /// ORDER BY CommitSequence
-        /// LIMIT @Limit;.
+        ///  LIMIT @Limit OFFSET @Skip;.
         /// </summary>
         internal static string GetMultipleStreams {
             get {
