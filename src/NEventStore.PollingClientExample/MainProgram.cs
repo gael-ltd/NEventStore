@@ -1,8 +1,8 @@
 namespace NEventStore.PollingClientExample
 {
     using System;
-    using NEventStore.Client;
-    using NEventStore.Persistence.Sql.SqlDialects;
+    using Client;
+    using Persistence.Sql.SqlDialects;
 
     internal static class MainProgram
     {

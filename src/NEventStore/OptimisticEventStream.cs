@@ -110,6 +110,26 @@ namespace NEventStore
             }
         }
 
+        public CommitAttempt GetCommitAttempt(Guid commitId)
+        {
+            Logger.Debug(Resources.AttemptingToCommitChanges, StreamId);
+
+            if (_identifiers.Contains(commitId))
+            {
+                throw new DuplicateCommitException();
+            }
+
+            try
+            {
+               return BuildCommitAttempt(commitId);
+            }
+            catch (ConcurrencyException)
+            {
+                Logger.Info(Resources.UnderlyingStreamHasChanged, StreamId);
+                throw;
+            }
+        }
+
         public void ClearChanges()
         {
             Logger.Debug(Resources.ClearingUncommittedChanges, StreamId);

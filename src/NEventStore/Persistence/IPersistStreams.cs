@@ -2,6 +2,8 @@ namespace NEventStore.Persistence
 {
     using System;
     using System.Collections.Generic;
+    using NEventStore.Persistence.Sql;
+    using NEventStore.Serialization;
 
     /// <summary>
     ///     Indicates the ability to adapt the underlying persistence infrastructure to behave like a stream of events.
@@ -100,5 +102,9 @@ namespace NEventStore.Persistence
         /// <param name="bucketId">The bucket Id from which the stream is to be deleted.</param>
         /// <param name="streamId">The stream Id of the stream that is to be deleted.</param>
         void DeleteStream(string bucketId, string streamId);
+
+        IStreamIdHasher GetStreamIdHasher();
+
+        ISerialize GetSerializer();
     }
 }

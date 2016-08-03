@@ -4,6 +4,8 @@ namespace NEventStore.Diagnostics
     using System.Collections.Generic;
     using System.Diagnostics;
     using NEventStore.Persistence;
+    using NEventStore.Persistence.Sql;
+    using NEventStore.Serialization;
 
     public class PerformanceCounterPersistenceEngine : IPersistStreams
     {
@@ -115,6 +117,16 @@ namespace NEventStore.Diagnostics
         public void DeleteStream(string bucketId, string streamId)
         {
             _persistence.DeleteStream(bucketId, streamId);
+        }
+
+        public IStreamIdHasher GetStreamIdHasher()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISerialize GetSerializer()
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsDisposed

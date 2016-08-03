@@ -298,6 +298,16 @@ namespace NEventStore.Persistence.Sql
                 });
         }
 
+        public IStreamIdHasher GetStreamIdHasher()
+        {
+            return _streamIdHasher;
+        }
+
+        public ISerialize GetSerializer()
+        {
+            return _serializer;
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             LongCheckpoint checkpoint = LongCheckpoint.Parse(checkpointToken);
