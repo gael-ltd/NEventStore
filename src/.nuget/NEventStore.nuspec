@@ -12,7 +12,7 @@
     <summary>NEventStore is a persistence agnostic event sourcing library for .NET. The primary use is most often associated with CQRS.</summary>
     <language>es-US</language>
     <tags>events, event sourcing, cqrs, storage, persistence, database</tags>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>Updates for Mnemosyne</releaseNotes>
     <references>
       <reference file="NEventStore.dll" />
     </references>
