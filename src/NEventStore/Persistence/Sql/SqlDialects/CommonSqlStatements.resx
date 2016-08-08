@@ -238,6 +238,6 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
    AND(StreamRevision - Items) &lt; @StreamRevision
    AND CommitSequence &gt; 0
  ORDER BY CommitSequence
-  LIMIT @Limit OFFSET @Skip;</value>
+  </value>
   </data>
 </root>

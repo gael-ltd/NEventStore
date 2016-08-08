@@ -186,7 +186,7 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
         ///   AND(StreamRevision - Items) &lt; @StreamRevision
         ///   AND CommitSequence &gt; 0
         /// ORDER BY CommitSequence
-        ///  LIMIT @Limit OFFSET @Skip;.
+        ///  .
         /// </summary>
         internal static string GetMultipleStreams {
             get {
