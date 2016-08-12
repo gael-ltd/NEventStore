@@ -1,24 +1,27 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>Gael NEventStore</id>
+    <id>Mnemosyne.NEventStore</id>
     <version>5.0</version>
-    <title>GaelNEventStore</title>
-    <authors>Ideagen</authors>
-    <owners></owners>
+    <title>Mnemosyne.NEventStore</title>
+    <authors>Ideagen Plc</authors>
+    <owners>NEvent Store Dev Team / Ideagen Plc</owners>
     <projectUrl>http://neventstore.org</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Forked Branch - containing improvements for Saturn</description>
+    <description>Forked Branch - containing improvements for Mnemosyne</description>
     <summary>NEventStore is a persistence agnostic event sourcing library for .NET. The primary use is most often associated with CQRS.</summary>
     <language>es-US</language>
     <tags>events, event sourcing, cqrs, storage, persistence, database</tags>
-	<releaseNotes>v5.x is not backwards compatible with v4.x. Please check the release notes on github.</releaseNotes>
+<<<<<<< HEAD
+    <releaseNotes>Updates for Mnemosyne</releaseNotes>
+=======
+    <releaseNotes></releaseNotes>
+>>>>>>> 2d9dbdb35b7c6f7452bf1a520f915836f52c2f07
+    <references>
+      <reference file="NEventStore.dll" />
+    </references>
   </metadata>
   <files>
-<<<<<<< HEAD
-    <file src="**" target="lib\net45"/>
-=======
-    <file src="publish-net40\bin\**" target="lib\net40"/>
->>>>>>> e844de387f33c94841c6365d52f1b68d3c47c693
-  </files>  
+    <file src="..\..\publish-net40\bin\**" target="lib\net45"/>
+  </files>
 </package>

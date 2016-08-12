@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<packages>
+<<<<<<< HEAD
+  <package id="Newtonsoft.Json" version="8.0.1" targetFramework="net40" requireReinstallation="true" />
+  <package id="Rx-Core" version="2.1.30214.0" targetFramework="net40" requireReinstallation="true" />
+  <package id="Rx-Interfaces" version="2.1.30214.0" targetFramework="net40" requireReinstallation="true" />
+  <package id="Rx-Linq" version="2.1.30214.0" targetFramework="net40" requireReinstallation="true" />
+=======
+  <package id="Newtonsoft.Json" version="8.0.1" targetFramework="net40" />
+  <package id="Rx-Core" version="2.1.30214.0" targetFramework="net40" />
+  <package id="Rx-Interfaces" version="2.1.30214.0" targetFramework="net40" />
+  <package id="Rx-Linq" version="2.1.30214.0" targetFramework="net40" />
+>>>>>>> 2d9dbdb35b7c6f7452bf1a520f915836f52c2f07
+</packages>
