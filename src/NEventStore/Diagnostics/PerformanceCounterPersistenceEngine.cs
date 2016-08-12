@@ -66,6 +66,11 @@ namespace NEventStore.Diagnostics
             return _persistence.GetFrom(bucketId, start);
         }
 
+        public IEnumerable<ICommit> GetStreams(params string[] streamIds)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             return _persistence.GetFrom(checkpointToken);

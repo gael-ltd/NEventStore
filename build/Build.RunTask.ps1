@@ -9,4 +9,4 @@ if($task -eq $null) {
 
 $scriptPath = $(Split-Path -parent $MyInvocation.MyCommand.path)
 
-. .\build\psake.ps1 -scriptPath $scriptPath -t $task -properties @{ build_number=$buildNumber;runPersistenceTests=$runPersistenceTests }
+. psake.ps1 -scriptPath $scriptPath -t $task -properties @{ build_number=$buildNumber;runPersistenceTests=$runPersistenceTests }

@@ -3,7 +3,7 @@ properties {
     $publish_directory = "$base_directory\publish-net40"
     $build_directory = "$base_directory\build"
     $src_directory = "$base_directory\src"
-    $output_directory = "$base_directory\output"
+    $output_directory = "$base_directory\src\NEventStore\bin\Release"
     $packages_directory = "$src_directory\packages"
     $sln_file = "$src_directory\NEventStore.sln"
     $target_config = "Release"
@@ -22,7 +22,7 @@ properties {
 
 task default -depends Build
 
-task Build -depends Clean, UpdateVersion, Compile, Test
+task Build -depends Clean, UpdateVersion, Compile
 
 task UpdateVersion {
     $version = Get-Version $assemblyInfoFilePath
@@ -37,31 +37,31 @@ task Compile {
 	exec { msbuild /nologo /verbosity:quiet $sln_file /p:Configuration=$target_config /p:TargetFrameworkVersion=v4.0 }
 }
 
-task Test -depends RunUnitTests, RunPersistenceTests, RunSerializationTests
+## task Test -depends RunUnitTests, RunPersistenceTests, RunSerializationTests
 
-task RunUnitTests {
-	"Unit Tests"
-	EnsureDirectory $output_directory
-	Invoke-XUnit -Path $src_directory -TestSpec '*NEventStore.Tests.dll' `
-    -SummaryPath $output_directory\unit_tests.xml `
-    -XUnitPath $xunit_path
-}
+##task RunUnitTests {
+##	"Unit Tests"
+##	EnsureDirectory $output_directory
+##	Invoke-XUnit -Path $src_directory -TestSpec '*NEventStore.Tests.dll' `
+##    -SummaryPath $output_directory\unit_tests.xml `
+##    -XUnitPath $xunit_path
+##}
 
-task RunPersistenceTests -precondition { $runPersistenceTests } {
-	"Persistence Tests"
-	EnsureDirectory $output_directory
-	Invoke-XUnit -Path $src_directory -TestSpec '*Persistence.MsSql.Tests.dll','*Persistence.MySql.Tests.dll','*Persistence.Oracle.Tests.dll','*Persistence.PostgreSql.Tests.dll','*Persistence.Sqlite.Tests.dll' `
-    -SummaryPath $output_directory\persistence_tests.xml `
-    -XUnitPath $xunit_path
-}
+##task RunPersistenceTests -precondition { $runPersistenceTests } {
+##	"Persistence Tests"
+##	EnsureDirectory $output_directory
+##	Invoke-XUnit -Path $src_directory -TestSpec '*Persistence.MsSql.Tests.dll','*Persistence.MySql.Tests.dll','*Persistence.Oracle.Tests.dll','*Persistence.PostgreSql.Tests.dll','*Persistence.Sqlite.Tests.dll' `
+##    -SummaryPath $output_directory\persistence_tests.xml `
+##    -XUnitPath $xunit_path
+##}
 
-task RunSerializationTests {
-	"Serialization Tests"
-	EnsureDirectory $output_directory
-	Invoke-XUnit -Path $src_directory -TestSpec '*Serialization.*.Tests.dll' `
-    -SummaryPath $output_directory\serialization_tests.xml `
-    -XUnitPath $xunit_path
-}
+##task RunSerializationTests {
+##	"Serialization Tests"
+##	EnsureDirectory $output_directory
+##	Invoke-XUnit -Path $src_directory -TestSpec '*Serialization.*.Tests.dll' `
+##    -SummaryPath $output_directory\serialization_tests.xml `
+##    -XUnitPath $xunit_path
+##}
 
 task Package -depends Build, PackageNEventStore {
 	move $output_directory $publish_directory

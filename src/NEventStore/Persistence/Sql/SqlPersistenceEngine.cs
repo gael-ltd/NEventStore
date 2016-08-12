@@ -12,7 +12,7 @@ namespace NEventStore.Persistence.Sql
 
     public class SqlPersistenceEngine : IPersistStreams
     {
-        private static readonly ILog Logger = LogFactory.BuildLogger(typeof (SqlPersistenceEngine));
+        private static readonly ILog Logger = LogFactory.BuildLogger(typeof(SqlPersistenceEngine));
         private static readonly DateTime EpochTime = new DateTime(1970, 1, 1);
         private readonly IConnectionFactory _connectionFactory;
         private readonly ISqlDialect _dialect;
@@ -30,7 +30,7 @@ namespace NEventStore.Persistence.Sql
             TransactionScopeOption scopeOption,
             int pageSize)
             : this(connectionFactory, dialect, serializer, scopeOption, pageSize, new Sha1StreamIdHasher())
-        {}
+        { }
 
         public SqlPersistenceEngine(
             IConnectionFactory connectionFactory,
@@ -110,9 +110,27 @@ namespace NEventStore.Persistence.Sql
                 });
         }
 
+        public virtual IEnumerable<ICommit> GetStreams(params string[] streamIds)
+        {
+            Logger.Debug(Messages.GettingAllCommitsBetween, streamIds, 0, int.MaxValue);
+            streamIds = streamIds.Select(_streamIdHasher.GetHash).ToArray();
+
+            return ExecuteQuery(query =>
+            {
+                string statement = string.Format(_dialect.GetStreams, "('" + string.Join("','", streamIds) + "')");
+                // query.AddParameter("@StreamIds", "'" + string.Join("','", streamIds) + "'", DbType.);
+                query.AddParameter(_dialect.CommitSequence, 0);
+                query.AddParameter(_dialect.StreamRevision, int.MaxValue);
+
+                return query
+                    .ExecutePagedQuery(statement, _dialect.NextPageDelegate)
+                    .Select(x => x.GetCommit(_serializer, _dialect));
+            });
+        }
+
         public virtual IEnumerable<ICommit> GetFrom(string bucketId, DateTime start)
         {
-            start = start.AddTicks(-(start.Ticks%TimeSpan.TicksPerSecond)); // Rounds down to the nearest second.
+            start = start.AddTicks(-(start.Ticks % TimeSpan.TicksPerSecond)); // Rounds down to the nearest second.
             start = start < EpochTime ? EpochTime : start;
 
             Logger.Debug(Messages.GettingAllCommitsFrom, start, bucketId);
@@ -138,7 +156,7 @@ namespace NEventStore.Persistence.Sql
 
         public virtual IEnumerable<ICommit> GetFromTo(string bucketId, DateTime start, DateTime end)
         {
-            start = start.AddTicks(-(start.Ticks%TimeSpan.TicksPerSecond)); // Rounds down to the nearest second.
+            start = start.AddTicks(-(start.Ticks % TimeSpan.TicksPerSecond)); // Rounds down to the nearest second.
             start = start < EpochTime ? EpochTime : start;
             end = end < EpochTime ? EpochTime : end;
 
@@ -310,7 +328,7 @@ namespace NEventStore.Persistence.Sql
         }
 
         protected virtual void OnPersistCommit(IDbStatement cmd, CommitAttempt attempt)
-        {}
+        { }
 
         private ICommit PersistCommit(CommitAttempt attempt)
         {
@@ -353,7 +371,7 @@ namespace NEventStore.Persistence.Sql
                     cmd.AddParameter(_dialect.CommitId, attempt.CommitId);
                     cmd.AddParameter(_dialect.CommitSequence, attempt.CommitSequence);
                     object value = cmd.ExecuteScalar(_dialect.DuplicateCommit);
-                    return (value is long ? (long) value : (int) value) > 0;
+                    return (value is long ? (long)value : (int)value) > 0;
                 });
         }
 
@@ -480,7 +498,7 @@ namespace NEventStore.Persistence.Sql
         private static bool RecoverableException(Exception e)
         {
             return e is UniqueKeyViolationException || e is StorageUnavailableException;
-        }     
+        }
 
         private class StreamIdHasherValidator : IStreamIdHasher
         {

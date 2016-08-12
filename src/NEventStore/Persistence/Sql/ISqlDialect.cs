@@ -17,6 +17,8 @@ namespace NEventStore.Persistence.Sql
         string GetCommitsFromInstant { get; }
         string GetCommitsFromToInstant { get; }
 
+        string GetStreams { get; }
+
         string PersistCommit { get; }
         string DuplicateCommit { get; }
 

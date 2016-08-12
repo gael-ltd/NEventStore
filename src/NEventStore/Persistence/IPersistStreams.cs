@@ -33,6 +33,8 @@ namespace NEventStore.Persistence
         /// <exception cref="StorageUnavailableException" />
         IEnumerable<ICommit> GetFrom(string bucketId, DateTime start);
 
+        IEnumerable<ICommit> GetStreams(params string[] streamIds);
+
         /// <summary>
         ///     Gets all commits after from the specified checkpoint. Use null to get from the beginning.
         /// </summary>
