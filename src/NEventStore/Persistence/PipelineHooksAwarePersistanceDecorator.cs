@@ -4,6 +4,8 @@ namespace NEventStore.Persistence
     using System.Collections.Generic;
     using System.Linq;
     using NEventStore.Logging;
+    using NEventStore.Persistence.Sql;
+    using NEventStore.Serialization;
 
     public class PipelineHooksAwarePersistanceDecorator : IPersistStreams
     {
@@ -125,6 +127,16 @@ namespace NEventStore.Persistence
             {
                 pipelineHook.OnDeleteStream(bucketId, streamId);
             }
+        }
+
+        public IStreamIdHasher GetStreamIdHasher()
+        {
+            return _original.GetStreamIdHasher();
+        }
+
+        public ISerialize GetSerializer()
+        {
+           return _original.GetSerializer();
         }
 
         public bool IsDisposed

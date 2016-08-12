@@ -67,6 +67,8 @@ namespace NEventStore
         /// <exception cref="StorageUnavailableException" />
         void CommitChanges(Guid commitId);
 
+        CommitAttempt GetCommitAttempt(Guid commitId);
+
         /// <summary>
         ///     Clears the uncommitted changes.
         /// </summary>

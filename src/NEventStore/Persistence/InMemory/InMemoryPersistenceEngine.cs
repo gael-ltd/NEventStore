@@ -6,6 +6,8 @@ namespace NEventStore.Persistence.InMemory
     using System.Linq;
     using System.Threading;
     using NEventStore.Logging;
+    using NEventStore.Persistence.Sql;
+    using NEventStore.Serialization;
 
     public class InMemoryPersistenceEngine : IPersistStreams
     {
@@ -144,6 +146,16 @@ namespace NEventStore.Persistence.InMemory
                 return;
             }
             bucket.DeleteStream(streamId);
+        }
+
+        public IStreamIdHasher GetStreamIdHasher()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ISerialize GetSerializer()
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsDisposed
