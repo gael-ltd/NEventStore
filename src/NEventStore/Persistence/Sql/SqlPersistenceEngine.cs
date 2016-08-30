@@ -145,7 +145,7 @@ namespace NEventStore.Persistence.Sql
                 });
         }
 
-        public ICheckpoint GetCheckpoint(string checkpointToken)
+        public virtual ICheckpoint GetCheckpoint(string checkpointToken)
         {
             if(string.IsNullOrWhiteSpace(checkpointToken))
             {
@@ -308,7 +308,7 @@ namespace NEventStore.Persistence.Sql
             return _serializer;
         }
 
-        public IEnumerable<ICommit> GetFrom(string checkpointToken)
+        public virtual IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             LongCheckpoint checkpoint = LongCheckpoint.Parse(checkpointToken);
             Logger.Debug(Messages.GettingAllCommitsFromCheckpoint, checkpointToken);
@@ -316,7 +316,7 @@ namespace NEventStore.Persistence.Sql
             {
                 string statement = _dialect.GetCommitsFromCheckpoint;
                 query.AddParameter(_dialect.CheckpointNumber, checkpoint.LongValue);
-                return query.ExecutePagedQuery(statement, (q, r) => { })
+                return query.ExecutePagedQuery(statement, _dialect.NextPageDelegate)
                     .Select(x => x.GetCommit(_serializer, _dialect));
             });
         }
