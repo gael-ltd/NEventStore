@@ -4,7 +4,6 @@ namespace NEventStore.Persistence
     using System.Collections.Generic;
     using System.Linq;
     using NEventStore.Logging;
-    using NEventStore.Persistence.Sql;
     using NEventStore.Serialization;
 
     public class PipelineHooksAwarePersistanceDecorator : IPersistStreams
@@ -77,6 +76,11 @@ namespace NEventStore.Persistence
             return ExecuteHooks(_original.GetFrom(checkpointToken));
         }
 
+        public IEnumerable<ICommit> GetFrom(string bucketId, string checkpointToken)
+        {
+            return ExecuteHooks(_original.GetFrom(bucketId, checkpointToken));
+        }
+
         public ICheckpoint GetCheckpoint(string checkpointToken)
         {
             return _original.GetCheckpoint(checkpointToken);
@@ -127,11 +131,6 @@ namespace NEventStore.Persistence
             {
                 pipelineHook.OnDeleteStream(bucketId, streamId);
             }
-        }
-
-        public IStreamIdHasher GetStreamIdHasher()
-        {
-            return _original.GetStreamIdHasher();
         }
 
         public ISerialize GetSerializer()

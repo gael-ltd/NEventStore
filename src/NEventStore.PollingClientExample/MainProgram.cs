@@ -1,8 +1,7 @@
 namespace NEventStore.PollingClientExample
 {
     using System;
-    using Client;
-    using Persistence.Sql.SqlDialects;
+    using NEventStore.Client;
 
     internal static class MainProgram
     {
@@ -50,8 +49,6 @@ namespace NEventStore.PollingClientExample
                 Wireup.Init()
                     .LogToOutputWindow()
                     .UsingInMemoryPersistence()
-                    .UsingSqlPersistence("NEventStore") // Connection string is in app.config
-                        .WithDialect(new MsSqlDialect()).EnlistInAmbientTransaction() // two-phase commit
                         .InitializeStorageEngine()
                         .TrackPerformanceInstance("example")
                         .UsingJsonSerialization()
