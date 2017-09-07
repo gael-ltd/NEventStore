@@ -110,15 +110,14 @@ namespace NEventStore.Persistence.Sql
                 });
         }
 
-        public virtual IEnumerable<ICommit> GetStreams(params string[] streamIds)
+        public virtual IEnumerable<ICommit> GetStreams(string bucketId, params string[] streamIds)
         {
             Logger.Debug(Messages.GettingAllCommitsBetween, streamIds, 0, int.MaxValue);
             streamIds = streamIds.Select(_streamIdHasher.GetHash).ToArray();
 
             return ExecuteQuery(query =>
             {
-                string statement = string.Format(_dialect.GetStreams, "('" + string.Join("','", streamIds) + "')");
-                // query.AddParameter("@StreamIds", "'" + string.Join("','", streamIds) + "'", DbType.);
+                string statement = string.Format(_dialect.GetStreams, bucketId, "('" + string.Join("','", streamIds) + "')");
                 query.AddParameter(_dialect.CommitSequence, 0);
                 query.AddParameter(_dialect.StreamRevision, int.MaxValue);
 
