@@ -19,7 +19,7 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class CommonSqlStatements {
@@ -180,8 +180,8 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
         /// <summary>
         ///   Looks up a localized string similar to SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
         ///  FROM Commits
-        /// WHERE BucketId = &apos;default&apos;
-        ///   AND StreamId IN  {0}
+        /// WHERE BucketId = &apos;{0}&apos;
+        ///   AND StreamId IN  {1}
         ///   AND StreamRevision &gt;= 0
         ///   AND(StreamRevision - Items) &lt; @StreamRevision
         ///   AND CommitSequence &gt; 0

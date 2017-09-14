@@ -46,7 +46,7 @@ namespace NEventStore.Persistence.InMemory
             return this[bucketId].GetFrom(start);
         }
 
-        public IEnumerable<ICommit> GetStreams(params string[] streamIds)
+        public IEnumerable<ICommit> GetStreams(string bucketId, params string[] streamIds)
         {
             throw new NotImplementedException();
         }

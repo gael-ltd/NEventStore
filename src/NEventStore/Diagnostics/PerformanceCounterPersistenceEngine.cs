@@ -68,7 +68,7 @@ namespace NEventStore.Diagnostics
             return _persistence.GetFrom(bucketId, start);
         }
 
-        public IEnumerable<ICommit> GetStreams(params string[] streamIds)
+        public IEnumerable<ICommit> GetStreams(string bucketId, params string[] streamIds)
         {
             throw new NotImplementedException();
         }

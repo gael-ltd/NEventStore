@@ -232,8 +232,8 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
   <data name="GetMultipleStreams" xml:space="preserve">
     <value>SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
   FROM Commits
- WHERE BucketId = 'default'
-   AND StreamId IN  {0}
+ WHERE BucketId = '{0}'
+   AND StreamId IN  {1}
    AND StreamRevision &gt;= 0
    AND(StreamRevision - Items) &lt; @StreamRevision
    AND CommitSequence &gt; 0
