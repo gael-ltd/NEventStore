@@ -129,6 +129,15 @@ namespace NEventStore.Persistence
             }
         }
 
+        public void DeleteStreams(string bucketId, List<string> streamIds)
+        {
+            _original.DeleteStreams(bucketId, streamIds);
+            foreach (var pipelineHook in _pipelineHooks)
+            {
+                pipelineHook.OnDeleteStreams(bucketId, streamIds);
+            }
+        }
+
         public IStreamIdHasher GetStreamIdHasher()
         {
             return _original.GetStreamIdHasher();

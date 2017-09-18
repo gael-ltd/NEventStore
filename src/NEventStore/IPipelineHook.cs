@@ -1,6 +1,7 @@
 namespace NEventStore
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     ///     Provides the ability to hook into the pipeline of persisting a commit.
@@ -42,5 +43,12 @@ namespace NEventStore
         /// <param name="bucketId">The bucket Id from which the stream whch has been deleted.</param>
         /// <param name="streamId">The stream Id of the stream which has been deleted.</param>
         void OnDeleteStream(string bucketId, string streamId);
+
+        /// <summary>
+        ///     Invoked when multiple streams have been deleted.
+        /// </summary>
+        /// <param name="bucketId">The bucket Id from which the stream whch has been deleted.</param>
+        /// <param name="streamIds">The stream Ids of the streams which have been deleted.</param>
+        void OnDeleteStreams(string bucketId, List<string> streamIds);
     }
 }

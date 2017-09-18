@@ -240,4 +240,8 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
  ORDER BY CommitSequence
   </value>
   </data>
+  <data name="DeleteStreams" xml:space="preserve">
+    <value>DELETE FROM Snapshots WHERE BucketId =@BucketId AND StreamId IN {0};
+DELETE FROM Commits WHERE BucketId =@BucketId AND StreamId IN {0};</value>
+  </data>
 </root>

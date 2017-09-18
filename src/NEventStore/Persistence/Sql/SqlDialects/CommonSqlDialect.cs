@@ -29,6 +29,11 @@ namespace NEventStore.Persistence.Sql.SqlDialects
             get { return CommonSqlStatements.DeleteStream; }
         }
 
+        public virtual string DeleteStreams
+        {
+            get { return CommonSqlStatements.DeleteStreams; }
+        }
+
         public virtual string GetCommitsFromStartingRevision
         {
             get { return CommonSqlStatements.GetCommitsFromStartingRevision; }

@@ -119,6 +119,11 @@ namespace NEventStore.Diagnostics
             _persistence.DeleteStream(bucketId, streamId);
         }
 
+        public void DeleteStreams(string bucketId, List<string> streamIds)
+        {
+            _persistence.DeleteStreams(bucketId, streamIds);
+        }
+
         public IStreamIdHasher GetStreamIdHasher()
         {
             throw new NotImplementedException();

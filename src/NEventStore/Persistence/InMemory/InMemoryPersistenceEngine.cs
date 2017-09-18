@@ -148,6 +148,17 @@ namespace NEventStore.Persistence.InMemory
             bucket.DeleteStream(streamId);
         }
 
+        public void DeleteStreams(string bucketId, List<string> streamIds)
+        {
+            Logger.Warn(Resources.DeletingStream, streamIds, bucketId);
+            Bucket bucket;
+            if (!_buckets.TryGetValue(bucketId, out bucket))
+            {
+                return;
+            }
+            bucket.DeleteStreams(streamIds);
+        }
+
         public IStreamIdHasher GetStreamIdHasher()
         {
             throw new NotImplementedException();
@@ -494,6 +505,28 @@ namespace NEventStore.Persistence.InMemory
                     }
                     IStreamHead streamHead = _heads.SingleOrDefault(s => s.StreamId == streamId);
                     if (streamHead != null)
+                    {
+                        _heads.Remove(streamHead);
+                    }
+                }
+            }
+
+            public void DeleteStreams(List<string> streamIds)
+            {
+                lock (_commits)
+                {
+                    InMemoryCommit[] commits = _commits.Where(c => streamIds.Contains(c.StreamId)).ToArray();
+                    foreach (var commit in commits)
+                    {
+                        _commits.Remove(commit);
+                    }
+                    ISnapshot[] snapshots = _snapshots.Where(s => streamIds.Contains(s.StreamId)).ToArray();
+                    foreach (var snapshot in snapshots)
+                    {
+                        _snapshots.Remove(snapshot);
+                    }
+                    IStreamHead[] streamHeads = _heads.Where(s => streamIds.Contains(s.StreamId)).ToArray();
+                    foreach (var streamHead in streamHeads)
                     {
                         _heads.Remove(streamHead);
                     }

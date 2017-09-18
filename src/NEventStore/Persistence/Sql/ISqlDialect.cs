@@ -12,6 +12,7 @@ namespace NEventStore.Persistence.Sql
         string PurgeBucket { get; }
         string Drop { get; }
         string DeleteStream { get; }
+        string DeleteStreams { get; }
 
         string GetCommitsFromStartingRevision { get; }
         string GetCommitsFromInstant { get; }
