@@ -294,4 +294,7 @@
   <data name="StreamIdIsNullEmptyOrWhiteSpace" xml:space="preserve">
     <value>streamId is null, empty, or whitespace.</value>
   </data>
+  <data name="DeletingStreams" xml:space="preserve">
+    <value>Deleting streams '{0}' from bucket '{1}'.</value>
+  </data>
 </root>

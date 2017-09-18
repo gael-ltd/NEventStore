@@ -104,6 +104,13 @@ namespace NEventStore.Persistence
         /// <param name="streamId">The stream Id of the stream that is to be deleted.</param>
         void DeleteStream(string bucketId, string streamId);
 
+        /// <summary>
+        /// Deletes multiple streams.
+        /// </summary>
+        /// <param name="bucketId">The bucket Id from which the stream is to be deleted.</param>
+        /// <param name="streamIds">List of stream Ids to delete.</param>
+        void DeleteStreams(string bucketId, List<string> streamIds);
+
         IStreamIdHasher GetStreamIdHasher();
 
         ISerialize GetSerializer();

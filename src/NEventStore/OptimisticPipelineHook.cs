@@ -104,6 +104,17 @@ namespace NEventStore
             }
         }
 
+        public override void OnDeleteStreams(string bucketId, List<string> streamIds)
+        {
+            lock (_maxItemsToTrack)
+            {
+                foreach (var streamId in streamIds)
+                {
+                    RemoveHead(new HeadKey(bucketId, streamId));
+                }
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             _heads.Clear();

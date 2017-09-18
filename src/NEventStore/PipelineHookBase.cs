@@ -1,5 +1,7 @@
 namespace NEventStore
 {
+    using System.Collections.Generic;
+
     public abstract class PipelineHookBase : IPipelineHook
     {
         public virtual void Dispose()
@@ -22,6 +24,9 @@ namespace NEventStore
         {}
 
         public virtual void OnDeleteStream(string bucketId, string streamId)
+        {}
+
+        public virtual void OnDeleteStreams(string bucketId, List<string> streamIds)
         {}
     }
 }

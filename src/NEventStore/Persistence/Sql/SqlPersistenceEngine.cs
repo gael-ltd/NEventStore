@@ -297,6 +297,20 @@ namespace NEventStore.Persistence.Sql
                 });
         }
 
+        public void DeleteStreams(string bucketId, List<string> streamIds)
+        {
+            var streamIdsFormatted = string.Join(", ", streamIds);
+            Logger.Warn(Messages.DeletingStreams, streamIdsFormatted, bucketId);
+            var streamIdsQuery = streamIds.Select(streamId => $"'{_streamIdHasher.GetHash(streamId)}'").ToList();
+            var inQuery = $"({string.Join(", ", streamIdsQuery)})";
+
+            ExecuteCommand(cmd =>
+            {
+                cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
+                return cmd.ExecuteNonQuery(string.Format(_dialect.DeleteStreams, inQuery));
+            });
+        }
+
         public IStreamIdHasher GetStreamIdHasher()
         {
             return _streamIdHasher;
