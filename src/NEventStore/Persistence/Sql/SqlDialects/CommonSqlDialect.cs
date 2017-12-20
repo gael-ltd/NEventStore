@@ -34,6 +34,11 @@ namespace NEventStore.Persistence.Sql.SqlDialects
             get { return CommonSqlStatements.DeleteStreams; }
         }
 
+        public virtual string DeleteAggregatesStreams
+        {
+            get { return CommonSqlStatements.DeleteAggregatesStreams; }
+        }
+
         public virtual string GetCommitsFromStartingRevision
         {
             get { return CommonSqlStatements.GetCommitsFromStartingRevision; }
@@ -114,6 +119,11 @@ namespace NEventStore.Persistence.Sql.SqlDialects
         public virtual string Items
         {
             get { return "@Items"; }
+        }
+
+        public virtual string ItemCountForStream
+        {
+            get { return "@ItemCount"; }
         }
 
         public virtual string CommitId

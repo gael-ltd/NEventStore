@@ -13,6 +13,7 @@ namespace NEventStore.Persistence.Sql
         string Drop { get; }
         string DeleteStream { get; }
         string DeleteStreams { get; }
+        string DeleteAggregatesStreams { get; }
 
         string GetCommitsFromStartingRevision { get; }
         string GetCommitsFromInstant { get; }
@@ -36,6 +37,7 @@ namespace NEventStore.Persistence.Sql
         string StreamRevision { get; }
         string MaxStreamRevision { get; }
         string Items { get; }
+        string ItemCountForStream { get; }
         string CommitId { get; }
         string CommitSequence { get; }
         string CommitStamp { get; }

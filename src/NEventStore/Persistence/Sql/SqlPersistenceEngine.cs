@@ -296,6 +296,19 @@ namespace NEventStore.Persistence.Sql
                     return cmd.ExecuteNonQuery(_dialect.DeleteStream);
                 });
         }
+        
+        public void DeleteAggregatesStreamsWhere(string bucketId, string streamIdOriginal, int itemCount)
+        {
+            Logger.Warn(Messages.DeletingStreams, (object) $"With Original id: {streamIdOriginal}", (object) bucketId);
+            streamIdOriginal = _streamIdHasher.GetHash(streamIdOriginal);
+            ExecuteCommand(cmd =>
+            {
+                cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
+                cmd.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal, DbType.AnsiString);
+                cmd.AddParameter(_dialect.ItemCountForStream, itemCount);
+                return cmd.ExecuteNonQuery(_dialect.DeleteAggregatesStreams);
+            });
+        }
 
         public void DeleteStreams(string bucketId, List<string> streamIds)
         {

@@ -138,6 +138,11 @@ namespace NEventStore.Persistence
             }
         }
 
+        public void DeleteAggregatesStreamsWhere(string bucketId, string streamIdOriginal, int itemCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public IStreamIdHasher GetStreamIdHasher()
         {
             return _original.GetStreamIdHasher();
