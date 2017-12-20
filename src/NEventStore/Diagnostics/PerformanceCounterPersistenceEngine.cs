@@ -124,9 +124,19 @@ namespace NEventStore.Diagnostics
             _persistence.DeleteStream(bucketId, streamId);
         }
 
+        public bool SafeDeleteStream(string bucketId, string streamId, int itemCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteStreams(string bucketId, List<string> streamIds)
         {
             _persistence.DeleteStreams(bucketId, streamIds);
+        }
+
+        bool IPersistStreams.SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
+        {
+            throw new NotImplementedException();
         }
 
         public void SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)

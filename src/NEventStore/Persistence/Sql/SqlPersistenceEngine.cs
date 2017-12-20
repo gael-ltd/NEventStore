@@ -313,18 +313,68 @@ namespace NEventStore.Persistence.Sql
                     return cmd.ExecuteNonQuery(_dialect.DeleteStream);
                 });
         }
+
+        public bool SafeDeleteStream(string bucketId, string streamId, int itemCount)
+        {
+            Logger.Warn(Messages.DeletingStream, streamId, bucketId);
+            streamId = _streamIdHasher.GetHash(streamId);
+            try
+            {
+                ExecuteCommand(cmd =>
+                {
+                    cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.StreamId, streamId, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.ItemCountForStream, itemCount);
+                    return cmd.ExecuteNonQuery(_dialect.SafeDeleteStream);
+                });
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool SafeDeleteStreams(string bucketId, List<string> streamIds, int itemCount)
+        {
+            var streamIdsFormatted = string.Join(", ", streamIds);
+            Logger.Warn(Messages.DeletingStreams, streamIdsFormatted, bucketId);
+            var streamIdsQuery = streamIds.Select(streamId => $"'{_streamIdHasher.GetHash(streamId)}'").ToList();
+            var inQuery = $"({string.Join(", ", streamIdsQuery)})";
+            try
+            {
+                ExecuteCommand(cmd =>
+                {
+                    cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
+                    return cmd.ExecuteNonQuery(string.Format(_dialect.SafeDeleteStreams, inQuery));
+                });
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
         
-        public void SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
+        public bool SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
         {
             Logger.Warn(Messages.DeletingStreams, (object) $"With Original id: {streamIdOriginal}", (object) bucketId);
             streamIdOriginal = _streamIdHasher.GetHash(streamIdOriginal);
-            ExecuteCommand(cmd =>
+            try
             {
-                cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
-                cmd.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal, DbType.AnsiString);
-                cmd.AddParameter(_dialect.ItemCountForStream, itemCount);
-                return cmd.ExecuteNonQuery(_dialect.DeleteAggregatesStreams);
-            });
+                ExecuteCommand(cmd =>
+                {
+                    cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.ItemCountForStream, itemCount);
+                    return cmd.ExecuteNonQuery(_dialect.DeleteAggregatesStreams);
+                });
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         public void DeleteStreams(string bucketId, List<string> streamIds)

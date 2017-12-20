@@ -104,14 +104,34 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
                 return ResourceManager.GetString("DeleteStreams", resourceCulture);
             }
         }        
+                
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId 
+        /// AND (SELECT SUM(Items) FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId) = @ItemCount;.
+        /// </summary>
+        internal static string SafeDeleteStream {
+            get {
+                return ResourceManager.GetString("SafeDeleteStream", resourceCulture);
+            }
+        }                
+                
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId 
+        /// AND (SELECT SUM(Items) FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId) = @ItemCount;.
+        /// </summary>
+        internal static string SafeDeleteStreams {
+            get {
+                return ResourceManager.GetString("SafeDeleteStreams", resourceCulture);
+            }
+        }        
         
         /// <summary>
-        ///   Looks up a localized string similar to DELETE FROM Snapshots WHERE BucketId =@BucketId AND StreamId IN {0};
-        ///DELETE FROM Commits WHERE BucketId =@BucketId AND StreamId IN {0};.
+        ///   Looks up a localized string similar to DELETE FROM Commits WHERE BucketId = @BucketId AND StreamIdOriginal = @StreamIdOriginal 
+        /// AND (SELECT SUM(Items) FROM Commits WHERE BucketId = @BucketId AND StreamIdOriginal = @StreamIdOriginal) = @ItemCount;
         /// </summary>
-        internal static string DeleteAggregatesStreams {
+        internal static string SafeDeleteAggregatesStreams {
             get {
-                return ResourceManager.GetString("DeleteAggregatesStreams", resourceCulture);
+                return ResourceManager.GetString("SafeDeleteAggregatesStreams", resourceCulture);
             }
         }
         

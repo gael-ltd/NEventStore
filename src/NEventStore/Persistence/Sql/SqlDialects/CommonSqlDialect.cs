@@ -34,9 +34,19 @@ namespace NEventStore.Persistence.Sql.SqlDialects
             get { return CommonSqlStatements.DeleteStreams; }
         }
 
-        public virtual string DeleteAggregatesStreams
+        public string SafeDeleteStream
         {
-            get { return CommonSqlStatements.DeleteAggregatesStreams; }
+            get { return CommonSqlStatements.SafeDeleteStream; }
+        }
+
+        public string SafeDeleteStreams
+        {
+            get { return CommonSqlStatements.SafeDeleteStreams; }
+        }
+
+        public virtual string SafeDeleteAggregatesStreams
+        {
+            get { return CommonSqlStatements.SafeDeleteAggregatesStreams; }
         }
 
         public virtual string GetCommitsFromStartingRevision

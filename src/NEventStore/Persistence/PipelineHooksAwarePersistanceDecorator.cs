@@ -134,6 +134,11 @@ namespace NEventStore.Persistence
             }
         }
 
+        public bool SafeDeleteStream(string bucketId, string streamId, int itemCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteStreams(string bucketId, List<string> streamIds)
         {
             _original.DeleteStreams(bucketId, streamIds);
@@ -141,6 +146,11 @@ namespace NEventStore.Persistence
             {
                 pipelineHook.OnDeleteStreams(bucketId, streamIds);
             }
+        }
+
+        bool IPersistStreams.SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
+        {
+            throw new NotImplementedException();
         }
 
         public void SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)

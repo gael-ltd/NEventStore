@@ -13,8 +13,10 @@ namespace NEventStore.Persistence.Sql
         string Drop { get; }
         string DeleteStream { get; }
         string DeleteStreams { get; }
-        string DeleteAggregatesStreams { get; }
-
+        string SafeDeleteStream { get; }
+        string SafeDeleteStreams { get; }
+        string SafeDeleteAggregatesStreams { get; }
+        
         string GetCommitsFromStartingRevision { get; }
         string GetCommitsFromInstant { get; }
         string GetCommitsFromToInstant { get; }
