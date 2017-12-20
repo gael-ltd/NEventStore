@@ -117,7 +117,7 @@ namespace NEventStore.Persistence
         /// <param name="bucketId">The bucket Id from which the stream is to be deleted.</param>
         /// <param name="streamIdOriginal">Aggregates Id to which the streams belong</param>
         /// <param name="itemCount">ensures the item count is equal to the expected count (concurrency issue protection)</param>
-        void DeleteAggregatesStreamsWhere(string bucketId, string streamIdOriginal, int itemCount);
+        void SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount);
 
         IStreamIdHasher GetStreamIdHasher();
 

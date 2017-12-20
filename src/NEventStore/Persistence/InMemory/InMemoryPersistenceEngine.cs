@@ -159,7 +159,7 @@ namespace NEventStore.Persistence.InMemory
             bucket.DeleteStreams(streamIds);
         }
 
-        public void DeleteAggregatesStreamsWhere(string bucketId, string streamIdOriginal, int itemCount)
+        public void SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
         {
             throw new NotImplementedException();
         }

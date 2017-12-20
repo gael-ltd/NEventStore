@@ -297,7 +297,7 @@ namespace NEventStore.Persistence.Sql
                 });
         }
         
-        public void DeleteAggregatesStreamsWhere(string bucketId, string streamIdOriginal, int itemCount)
+        public void SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
         {
             Logger.Warn(Messages.DeletingStreams, (object) $"With Original id: {streamIdOriginal}", (object) bucketId);
             streamIdOriginal = _streamIdHasher.GetHash(streamIdOriginal);
