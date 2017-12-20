@@ -51,6 +51,11 @@ namespace NEventStore.Persistence.InMemory
             throw new NotImplementedException();
         }
 
+        public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             Logger.Debug(Resources.GettingAllCommitsFromCheckpoint, checkpointToken);

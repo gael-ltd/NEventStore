@@ -73,6 +73,11 @@ namespace NEventStore.Diagnostics
             throw new NotImplementedException();
         }
 
+        public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             return _persistence.GetFrom(checkpointToken);

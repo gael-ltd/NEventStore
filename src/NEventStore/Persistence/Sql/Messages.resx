@@ -141,6 +141,9 @@
   <data name="OpenFailed" xml:space="preserve">
     <value>Unable to open connection '{0}'.</value>
   </data>
+  <data name="GettingAggregatesStreams" xml:space="preserve">
+    <value>Getting streams for aggregate id: '{0}'.</value>
+  </data>
   <data name="DiscoveredConnectionProvider" xml:space="preserve">
     <value>Discovered DB provider factory settings for '{0}', using '{1}'.</value>
   </data>

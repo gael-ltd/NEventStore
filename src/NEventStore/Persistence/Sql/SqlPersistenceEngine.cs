@@ -126,6 +126,23 @@ namespace NEventStore.Persistence.Sql
                     .Select(x => x.GetCommit(_serializer, _dialect));
             });
         }
+        
+        public virtual IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
+        {
+            Logger.Debug(Messages.GettingAggregatesStreams, streamIdOriginal);
+            return ExecuteQuery(query =>
+            {
+                string statement = _dialect.GetAggregatesStreams;
+                query.AddParameter(_dialect.CommitSequence, 0);
+                query.AddParameter(_dialect.BucketId, bucketId);
+                query.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal);
+                query.AddParameter(_dialect.StreamRevision, int.MaxValue);
+
+                return query
+                    .ExecutePagedQuery(statement, _dialect.NextPageDelegate)
+                    .Select(x => x.GetCommit(_serializer, _dialect));
+            });
+        }
 
         public virtual IEnumerable<ICommit> GetFrom(string bucketId, DateTime start)
         {

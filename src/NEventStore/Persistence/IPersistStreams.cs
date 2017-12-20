@@ -37,6 +37,8 @@ namespace NEventStore.Persistence
 
         IEnumerable<ICommit> GetStreams(string bucketId, params string[] streamIds);
 
+        IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal);
+        
         /// <summary>
         ///     Gets all commits after from the specified checkpoint. Use null to get from the beginning.
         /// </summary>

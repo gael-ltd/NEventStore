@@ -59,6 +59,11 @@ namespace NEventStore.Persistence.Sql.SqlDialects
             get { return CommonSqlStatements.GetMultipleStreams; }
         }
 
+        public string GetAggregatesStreams
+        {
+            get { return CommonSqlStatements.GetAggregatesStreams; }
+        }
+
         public abstract string PersistCommit { get; }
 
         public virtual string DuplicateCommit
