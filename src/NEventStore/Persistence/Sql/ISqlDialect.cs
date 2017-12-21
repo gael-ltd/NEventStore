@@ -39,7 +39,6 @@ namespace NEventStore.Persistence.Sql
         string StreamRevision { get; }
         string MaxStreamRevision { get; }
         string Items { get; }
-        string ItemCountForStream { get; }
         string CommitId { get; }
         string CommitSequence { get; }
         string CommitStamp { get; }
