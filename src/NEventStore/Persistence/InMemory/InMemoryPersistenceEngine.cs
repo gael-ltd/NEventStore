@@ -174,6 +174,11 @@ namespace NEventStore.Persistence.InMemory
             throw new NotImplementedException();
         }
 
+        public bool SafeUpdate(string bucketId, string streamId, int itemCount, byte[] payload, byte[] headers)
+        {
+            throw new NotImplementedException();
+        }
+
         public IStreamIdHasher GetStreamIdHasher()
         {
             throw new NotImplementedException();

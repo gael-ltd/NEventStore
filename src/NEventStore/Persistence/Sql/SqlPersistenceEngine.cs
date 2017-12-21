@@ -324,7 +324,7 @@ namespace NEventStore.Persistence.Sql
                 {
                     cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
                     cmd.AddParameter(_dialect.StreamId, streamId, DbType.AnsiString);
-                    cmd.AddParameter(_dialect.ItemCountForStream, itemCount);
+                    cmd.AddParameter(_dialect.Items, itemCount);
                     return cmd.ExecuteNonQuery(_dialect.SafeDeleteStream);
                 }) > 0;
             }
@@ -344,8 +344,30 @@ namespace NEventStore.Persistence.Sql
                 {
                     cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
                     cmd.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal, DbType.AnsiString);
-                    cmd.AddParameter(_dialect.ItemCountForStream, itemCount);
+                    cmd.AddParameter(_dialect.Items, itemCount);
                     return cmd.ExecuteNonQuery(_dialect.SafeDeleteAggregatesStreams);
+                }) > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        
+        public bool SafeUpdate(string bucketId, string streamId, int itemCount, byte[] payload, byte[] headers)
+        {
+            Logger.Warn(Messages.DeletingStream, streamId, bucketId);
+            streamId = _streamIdHasher.GetHash(streamId);
+            try
+            {
+                return ExecuteCommand(cmd =>
+                {
+                    cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.StreamId, streamId, DbType.AnsiString);
+                    cmd.AddParameter(_dialect.Payload, payload);
+                    cmd.AddParameter(_dialect.Headers, headers);
+                    cmd.AddParameter(_dialect.Items, itemCount);
+                    return cmd.ExecuteNonQuery(_dialect.SafeDeleteStream);
                 }) > 0;
             }
             catch

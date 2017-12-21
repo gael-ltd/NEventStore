@@ -236,7 +236,7 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
             (SELECT SUM(Items) 
             FROM Commits
             WHERE BucketId = @BucketId AND 
-            StreamIdOriginal = @StreamIdOriginal) = @ItemCount;
+            StreamIdOriginal = @StreamIdOriginal) = @Items;
     </value>
   </data>
   <data name="SafeDeleteStream" xml:space="preserve">
@@ -246,7 +246,7 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
             (SELECT SUM(Items) 
             FROM Commits
             WHERE BucketId = @BucketId AND 
-            StreamId = @StreamId) = @ItemCount;
+            StreamId = @StreamId) = @Items;
     </value>
   </data>
   <data name="GetAggregatesStreams" xml:space="preserve">
@@ -258,6 +258,19 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
              AND(StreamRevision - Items) &lt; @StreamRevision
              AND CommitSequence &gt; 0
              ORDER BY CommitSequence;
+    </value>
+  </data>
+  <data name="SafeUpdateStream" xml:space="preserve">
+    <value> UPDATE Commits
+            SET Items = @Items
+            SET Headers = @Headers
+            SET Payload = @Payload
+            WHERE BucketId = @BucketId AND 
+            StreamId = @StreamId AND
+            (SELECT SUM(Items) 
+            FROM Commits
+            WHERE BucketId = @BucketId AND 
+            StreamId = @StreamId) = @Items;
     </value>
   </data>
   <data name="GetMultipleStreams" xml:space="preserve">
