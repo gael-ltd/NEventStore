@@ -14,8 +14,8 @@ TestResults
 *.user
 *.sln.docstates
 */.idea/
-*.DotSettings.*
-*.sln.DotSettings
+*/*.DotSettings.*
+*/*.sln.DotSettings
 
 # Build results
 [Dd]ebug/

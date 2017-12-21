@@ -153,11 +153,6 @@ namespace NEventStore.Persistence
             throw new NotImplementedException();
         }
 
-        public void SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
-        {
-            throw new NotImplementedException();
-        }
-
         public IStreamIdHasher GetStreamIdHasher()
         {
             return _original.GetStreamIdHasher();
