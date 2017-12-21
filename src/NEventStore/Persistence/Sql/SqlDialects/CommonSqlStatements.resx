@@ -249,16 +249,6 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
             StreamId = @StreamId) = @ItemCount;
     </value>
   </data>
-  <data name="SafeDeleteStreams" xml:space="preserve">
-    <value>DELETE FROM Commits
-            WHERE BucketId = @BucketId AND
-            StreamId IN {0} AND
-            (SELECT SUM(Items)
-            FROM Commits
-            WHERE BucketId = @BucketId AND 
-            StreamId IN {0}) = @ItemCount;
-    </value>
-  </data>
   <data name="GetAggregatesStreams" xml:space="preserve">
     <value>SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
              FROM Commits
