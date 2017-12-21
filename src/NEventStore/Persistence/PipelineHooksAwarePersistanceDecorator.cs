@@ -72,6 +72,11 @@ namespace NEventStore.Persistence
             return ExecuteHooks(_original.GetStreams(bucketId, streamIds));
         }
 
+        public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             return ExecuteHooks(_original.GetFrom(checkpointToken));
@@ -129,6 +134,11 @@ namespace NEventStore.Persistence
             }
         }
 
+        public bool SafeDeleteStream(string bucketId, string streamId, int itemCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteStreams(string bucketId, List<string> streamIds)
         {
             _original.DeleteStreams(bucketId, streamIds);
@@ -136,6 +146,11 @@ namespace NEventStore.Persistence
             {
                 pipelineHook.OnDeleteStreams(bucketId, streamIds);
             }
+        }
+
+        bool IPersistStreams.SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
+        {
+            throw new NotImplementedException();
         }
 
         public IStreamIdHasher GetStreamIdHasher()

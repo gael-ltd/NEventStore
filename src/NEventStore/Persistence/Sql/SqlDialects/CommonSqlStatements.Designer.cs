@@ -103,6 +103,26 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
             get {
                 return ResourceManager.GetString("DeleteStreams", resourceCulture);
             }
+        }        
+                
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId 
+        /// AND (SELECT SUM(Items) FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId) = @ItemCount;.
+        /// </summary>
+        internal static string SafeDeleteStream {
+            get {
+                return ResourceManager.GetString("SafeDeleteStream", resourceCulture);
+            }
+        }     
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DELETE FROM Commits WHERE BucketId = @BucketId AND StreamIdOriginal = @StreamIdOriginal 
+        /// AND (SELECT SUM(Items) FROM Commits WHERE BucketId = @BucketId AND StreamIdOriginal = @StreamIdOriginal) = @ItemCount;
+        /// </summary>
+        internal static string SafeDeleteAggregatesStreams {
+            get {
+                return ResourceManager.GetString("SafeDeleteAggregatesStreams", resourceCulture);
+            }
         }
         
         /// <summary>
@@ -201,6 +221,23 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
         internal static string GetMultipleStreams {
             get {
                 return ResourceManager.GetString("GetMultipleStreams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
+        ///  FROM Commits
+        /// WHERE BucketId = &apos;{0}&apos;
+        ///   AND StreamId IN  {1}
+        ///   AND StreamRevision &gt;= 0
+        ///   AND(StreamRevision - Items) &lt; @StreamRevision
+        ///   AND CommitSequence &gt; 0
+        /// ORDER BY CommitSequence
+        ///  .
+        /// </summary>
+        internal static string GetAggregatesStreams {
+            get {
+                return ResourceManager.GetString("GetAggregatesStreams", resourceCulture);
             }
         }
         

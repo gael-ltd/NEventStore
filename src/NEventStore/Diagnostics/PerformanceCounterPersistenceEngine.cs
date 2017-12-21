@@ -73,6 +73,11 @@ namespace NEventStore.Diagnostics
             throw new NotImplementedException();
         }
 
+        public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             return _persistence.GetFrom(checkpointToken);
@@ -119,9 +124,19 @@ namespace NEventStore.Diagnostics
             _persistence.DeleteStream(bucketId, streamId);
         }
 
+        public bool SafeDeleteStream(string bucketId, string streamId, int itemCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteStreams(string bucketId, List<string> streamIds)
         {
             _persistence.DeleteStreams(bucketId, streamIds);
+        }
+
+        bool IPersistStreams.SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
+        {
+            throw new NotImplementedException();
         }
 
         public IStreamIdHasher GetStreamIdHasher()

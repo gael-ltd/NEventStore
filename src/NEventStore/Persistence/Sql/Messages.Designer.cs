@@ -70,6 +70,15 @@ namespace NEventStore.Persistence.Sql {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding parameter named &apos;{0}&apos; to statement..
+        /// </summary>
+        internal static string GettingAggregatesStreams {
+            get {
+                return ResourceManager.GetString("GettingAggregatesStreams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adding snapshot to stream &apos;{0}&apos; at position {1}..
         /// </summary>
         internal static string AddingSnapshot {

@@ -51,6 +51,11 @@ namespace NEventStore.Persistence.InMemory
             throw new NotImplementedException();
         }
 
+        public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<ICommit> GetFrom(string checkpointToken)
         {
             Logger.Debug(Resources.GettingAllCommitsFromCheckpoint, checkpointToken);
@@ -148,6 +153,11 @@ namespace NEventStore.Persistence.InMemory
             bucket.DeleteStream(streamId);
         }
 
+        public bool SafeDeleteStream(string bucketId, string streamId, int itemCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteStreams(string bucketId, List<string> streamIds)
         {
             Logger.Warn(Resources.DeletingStream, streamIds, bucketId);
@@ -157,6 +167,11 @@ namespace NEventStore.Persistence.InMemory
                 return;
             }
             bucket.DeleteStreams(streamIds);
+        }
+
+        bool IPersistStreams.SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
+        {
+            throw new NotImplementedException();
         }
 
         public IStreamIdHasher GetStreamIdHasher()
