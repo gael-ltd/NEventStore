@@ -113,17 +113,7 @@ namespace NEventStore.Persistence.Sql.SqlDialects {
             get {
                 return ResourceManager.GetString("SafeDeleteStream", resourceCulture);
             }
-        }                
-                
-        /// <summary>
-        ///   Looks up a localized string similar to DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId 
-        /// AND (SELECT SUM(Items) FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId) = @ItemCount;.
-        /// </summary>
-        internal static string SafeDeleteStreams {
-            get {
-                return ResourceManager.GetString("SafeDeleteStreams", resourceCulture);
-            }
-        }        
+        }     
         
         /// <summary>
         ///   Looks up a localized string similar to DELETE FROM Commits WHERE BucketId = @BucketId AND StreamIdOriginal = @StreamIdOriginal 

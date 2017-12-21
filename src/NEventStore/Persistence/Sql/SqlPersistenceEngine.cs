@@ -334,27 +334,6 @@ namespace NEventStore.Persistence.Sql
             }
             return true;
         }
-
-        public bool SafeDeleteStreams(string bucketId, List<string> streamIds, int itemCount)
-        {
-            var streamIdsFormatted = string.Join(", ", streamIds);
-            Logger.Warn(Messages.DeletingStreams, streamIdsFormatted, bucketId);
-            var streamIdsQuery = streamIds.Select(streamId => $"'{_streamIdHasher.GetHash(streamId)}'").ToList();
-            var inQuery = $"({string.Join(", ", streamIdsQuery)})";
-            try
-            {
-                ExecuteCommand(cmd =>
-                {
-                    cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
-                    return cmd.ExecuteNonQuery(string.Format(_dialect.SafeDeleteStreams, inQuery));
-                });
-            }
-            catch
-            {
-                return false;
-            }
-            return true;
-        }
         
         public bool SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
         {
@@ -367,7 +346,7 @@ namespace NEventStore.Persistence.Sql
                     cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
                     cmd.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal, DbType.AnsiString);
                     cmd.AddParameter(_dialect.ItemCountForStream, itemCount);
-                    return cmd.ExecuteNonQuery(_dialect.DeleteAggregatesStreams);
+                    return cmd.ExecuteNonQuery(_dialect.SafeDeleteAggregatesStreams);
                 });
             }
             catch
