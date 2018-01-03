@@ -127,23 +127,6 @@ namespace NEventStore.Persistence.Sql
             });
         }
         
-        public virtual IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
-        {
-            Logger.Debug(Messages.GettingAggregatesStreams, streamIdOriginal);
-            return ExecuteQuery(query =>
-            {
-                string statement = _dialect.GetAggregatesStreams;
-                query.AddParameter(_dialect.CommitSequence, 0);
-                query.AddParameter(_dialect.BucketId, bucketId);
-                query.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal);
-                query.AddParameter(_dialect.StreamRevision, int.MaxValue);
-
-                return query
-                    .ExecutePagedQuery(statement, _dialect.NextPageDelegate)
-                    .Select(x => x.GetCommit(_serializer, _dialect));
-            });
-        }
-
         public virtual IEnumerable<ICommit> GetFrom(string bucketId, DateTime start)
         {
             start = start.AddTicks(-(start.Ticks % TimeSpan.TicksPerSecond)); // Rounds down to the nearest second.
@@ -326,26 +309,6 @@ namespace NEventStore.Persistence.Sql
                     cmd.AddParameter(_dialect.StreamId, streamId, DbType.AnsiString);
                     cmd.AddParameter(_dialect.Items, itemCount);
                     return cmd.ExecuteNonQuery(_dialect.SafeDeleteStream);
-                }) > 0;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        
-        public bool SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
-        {
-            Logger.Warn(Messages.DeletingStreams, (object) $"With Original id: {streamIdOriginal}", (object) bucketId);
-            streamIdOriginal = _streamIdHasher.GetHash(streamIdOriginal);
-            try
-            {
-                return ExecuteCommand(cmd =>
-                {
-                    cmd.AddParameter(_dialect.BucketId, bucketId, DbType.AnsiString);
-                    cmd.AddParameter(_dialect.StreamIdOriginal, streamIdOriginal, DbType.AnsiString);
-                    cmd.AddParameter(_dialect.Items, itemCount);
-                    return cmd.ExecuteNonQuery(_dialect.SafeDeleteAggregatesStreams);
                 }) > 0;
             }
             catch

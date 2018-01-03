@@ -14,14 +14,12 @@ namespace NEventStore.Persistence.Sql
         string DeleteStream { get; }
         string DeleteStreams { get; }
         string SafeDeleteStream { get; }
-        string SafeDeleteAggregatesStreams { get; }
         
         string GetCommitsFromStartingRevision { get; }
         string GetCommitsFromInstant { get; }
         string GetCommitsFromToInstant { get; }
 
         string GetStreams { get; }
-        string GetAggregatesStreams { get; }
 
         string PersistCommit { get; }
         string DuplicateCommit { get; }

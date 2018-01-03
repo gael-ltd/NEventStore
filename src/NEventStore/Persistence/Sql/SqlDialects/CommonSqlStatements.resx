@@ -229,16 +229,6 @@ ORDER BY CheckpointNumber
     <value>DELETE FROM Snapshots WHERE BucketId =@BucketId AND StreamId = @StreamId;
 DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
   </data>
-  <data name="SafeDeleteAggregatesStreams" xml:space="preserve">
-    <value>DELETE FROM Commits
-            WHERE BucketId = @BucketId AND 
-            StreamIdOriginal = @StreamIdOriginal AND
-            (SELECT SUM(Items) 
-            FROM Commits
-            WHERE BucketId = @BucketId AND 
-            StreamIdOriginal = @StreamIdOriginal) = @Items;
-    </value>
-  </data>
   <data name="SafeDeleteStream" xml:space="preserve">
     <value>DELETE FROM Commits
             WHERE BucketId = @BucketId AND 
@@ -247,17 +237,6 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
             FROM Commits
             WHERE BucketId = @BucketId AND 
             StreamId = @StreamId) = @Items;
-    </value>
-  </data>
-  <data name="GetAggregatesStreams" xml:space="preserve">
-    <value>SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
-             FROM Commits
-             WHERE BucketId = @BucketId
-             AND StreamIdOriginal = @StreamIdOriginal
-             AND StreamRevision &gt;= 0
-             AND(StreamRevision - Items) &lt; @StreamRevision
-             AND CommitSequence &gt; 0
-             ORDER BY CommitSequence;
     </value>
   </data>
   <data name="GetMultipleStreams" xml:space="preserve">

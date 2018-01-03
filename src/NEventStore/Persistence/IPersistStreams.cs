@@ -36,8 +36,6 @@ namespace NEventStore.Persistence
         IEnumerable<ICommit> GetFrom(string bucketId, DateTime start);
 
         IEnumerable<ICommit> GetStreams(string bucketId, params string[] streamIds);
-
-        IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal);
         
         /// <summary>
         ///     Gets all commits after from the specified checkpoint. Use null to get from the beginning.
@@ -120,14 +118,6 @@ namespace NEventStore.Persistence
         /// <param name="bucketId">The bucket Id from which the stream is to be deleted.</param>
         /// <param name="streamIds">List of stream Ids to delete.</param>
         void DeleteStreams(string bucketId, List<string> streamIds);
-
-        /// <summary>
-        /// Deletes a stream where aggregateId is equal to streamIdOriginal.
-        /// </summary>
-        /// <param name="bucketId">The bucket Id from which the stream is to be deleted.</param>
-        /// <param name="streamIdOriginal">Aggregates Id to which the streams belong</param>
-        /// <param name="itemCount">ensures the item count is equal to the expected count (concurrency issue protection)</param>
-        bool SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount);
         
         IStreamIdHasher GetStreamIdHasher();
 
