@@ -260,19 +260,6 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
              ORDER BY CommitSequence;
     </value>
   </data>
-  <data name="SafeUpdateStream" xml:space="preserve">
-    <value> UPDATE Commits
-            SET Items = @Items
-            SET Headers = @Headers
-            SET Payload = @Payload
-            WHERE BucketId = @BucketId AND 
-            StreamId = @StreamId AND
-            (SELECT SUM(Items) 
-            FROM Commits
-            WHERE BucketId = @BucketId AND 
-            StreamId = @StreamId) = @Items;
-    </value>
-  </data>
   <data name="GetMultipleStreams" xml:space="preserve">
     <value>SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
   FROM Commits

@@ -128,8 +128,6 @@ namespace NEventStore.Persistence
         /// <param name="streamIdOriginal">Aggregates Id to which the streams belong</param>
         /// <param name="itemCount">ensures the item count is equal to the expected count (concurrency issue protection)</param>
         bool SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount);
-
-        bool SafeUpdate(string bucketId, string streamId, int itemCount, byte[] payload, byte[] headers);
         
         IStreamIdHasher GetStreamIdHasher();
 
