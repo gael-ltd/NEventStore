@@ -169,16 +169,6 @@ namespace NEventStore.Persistence.InMemory
             bucket.DeleteStreams(streamIds);
         }
 
-        bool IPersistStreams.SafeDeleteAggregatesStreams(string bucketId, string streamIdOriginal, int itemCount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool SafeUpdate(string bucketId, string streamId, int itemCount, byte[] payload, byte[] headers)
-        {
-            throw new NotImplementedException();
-        }
-
         public IStreamIdHasher GetStreamIdHasher()
         {
             throw new NotImplementedException();
