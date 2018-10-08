@@ -51,6 +51,13 @@ namespace NEventStore.Persistence.InMemory
             throw new NotImplementedException();
         }
 
+        public IEnumerable<ICommit> GetStreamCommitsFrom(string bucketId, DateTime start, params string[] streamIds)
+        {
+            ThrowWhenDisposed();
+            Logger.Debug(Resources.GettingStreamCommitsFrom, streamIds.Count(), start);
+            return this[bucketId].GetStreamCommitsFrom(start, streamIds);
+        }
+
         public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
         {
             throw new NotImplementedException();
@@ -457,6 +464,13 @@ namespace NEventStore.Persistence.InMemory
                         .Where(x => x.HeadRevision >= x.SnapshotRevision + maxThreshold)
                         .Select(stream => new StreamHead(stream.BucketId, stream.StreamId, stream.HeadRevision, stream.SnapshotRevision));
                 }
+            }
+
+            public IEnumerable<ICommit> GetStreamCommitsFrom(DateTime start, string[] streamIds)
+            {
+                return _commits
+                    .Where(c => streamIds.Contains(c.StreamId) && c.CommitStamp >= start)
+                    .OrderBy(c => c.CommitSequence);
             }
 
             public ISnapshot GetSnapshot(string streamId, int maxRevision)

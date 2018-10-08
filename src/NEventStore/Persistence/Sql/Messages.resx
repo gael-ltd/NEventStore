@@ -300,4 +300,7 @@
   <data name="DeletingStreams" xml:space="preserve">
     <value>Deleting streams '{0}' from bucket '{1}'.</value>
   </data>
+  <data name="GettingStreamsFrom" xml:space="preserve">
+    <value>Getting commits for {0} streams since {1}</value>
+  </data>
 </root>

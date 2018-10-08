@@ -70,15 +70,6 @@ namespace NEventStore.Persistence.Sql {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding parameter named &apos;{0}&apos; to statement..
-        /// </summary>
-        internal static string GettingAggregatesStreams {
-            get {
-                return ResourceManager.GetString("GettingAggregatesStreams", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Adding snapshot to stream &apos;{0}&apos; at position {1}..
         /// </summary>
         internal static string AddingSnapshot {
@@ -367,6 +358,15 @@ namespace NEventStore.Persistence.Sql {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Getting streams for aggregate id: &apos;{0}&apos;..
+        /// </summary>
+        internal static string GettingAggregatesStreams {
+            get {
+                return ResourceManager.GetString("GettingAggregatesStreams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Getting all commits for stream &apos;{0}&apos; between revisions &apos;{1}&apos; and &apos;{2}&apos;..
         /// </summary>
         internal static string GettingAllCommitsBetween {
@@ -408,6 +408,15 @@ namespace NEventStore.Persistence.Sql {
         internal static string GettingRevision {
             get {
                 return ResourceManager.GetString("GettingRevision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting commits for {0} streams since {1}.
+        /// </summary>
+        internal static string GettingStreamsFrom {
+            get {
+                return ResourceManager.GetString("GettingStreamsFrom", resourceCulture);
             }
         }
         

@@ -507,6 +507,78 @@ namespace NEventStore.Persistence.AcceptanceTests
         }
     }
 
+    public class when_reading_commits_from_subset_of_streams_from_a_particular_point_in_time : PersistenceEngineConcern
+    {
+        private DateTime _now;
+        private DateTime _inspectionDate;
+        private string[] _streamIds;
+        private string _bucketId;
+        private ICommit[] _committed;
+
+        protected override void Context()
+        {
+            _bucketId = "A";
+            _now = SystemTime.UtcNow.AddYears(1);
+            _inspectionDate = _now.AddSeconds(3);
+            BuildStreamAndCommits(3);
+        }
+
+        private void BuildStreamAndCommits(int num)
+        {
+            ICommit prevCommit = null;
+            _streamIds = new string[num];
+            for(var i = 0; i < num; i++)
+            {
+                _streamIds[i] = Guid.NewGuid().ToString();
+                prevCommit = BuildCommitsForStream(_streamIds[i], 5, _now.AddSeconds(1), prevCommit);
+            }
+        }
+
+        private ICommit BuildCommitsForStream(string streamId, int num, DateTime startDate, ICommit previousCommit = null)
+        {
+            var firstItem = previousCommit == null
+                ? streamId.BuildAttempt(startDate, _bucketId)
+                : streamId.BuildAttemptFromPrevious(previousCommit, startDate);
+
+            var prevCommit = Persistence.Commit(firstItem);
+
+            for (var i = 1; i < num; i++)
+            {
+                var next = prevCommit.BuildNextAttempt();
+                prevCommit = Persistence.Commit(next);
+            }
+
+            return prevCommit;
+        }
+
+        protected override void Because()
+        {
+            // Get commits for the first 2 streams for the inspection date (3 seconds after now)
+            var requiredStreamIds = new [] { _streamIds[0], _streamIds[1] };
+            _committed = Persistence.GetStreamCommitsFrom(_bucketId, _inspectionDate, requiredStreamIds).ToArray();
+        }
+
+        [Fact]
+        public void should_only_return_commits_from_requested_streams()
+        {
+            var streamIds = _committed.Select(c => c.StreamId).Distinct();
+            streamIds.Count().ShouldBe(2);
+            streamIds.ShouldContain(_streamIds[0]);
+            streamIds.ShouldContain(_streamIds[1]);
+        }
+
+        [Fact]
+        public void should_only_return_commits_after_the_specified_point_in_time()
+        {
+            _committed.Length.ShouldBe(6);
+            foreach(var commit in _committed)
+            {
+                commit.CommitStamp.ShouldBeGreaterThanOrEqualTo(_inspectionDate);
+            }
+        }
+
+    }
+
     public class when_reading_all_commits_from_a_particular_point_in_time : PersistenceEngineConcern
     {
         private ICommit[] _committed;

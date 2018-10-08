@@ -72,6 +72,11 @@ namespace NEventStore.Persistence
             return ExecuteHooks(_original.GetStreams(bucketId, streamIds));
         }
 
+        public IEnumerable<ICommit> GetStreamCommitsFrom(string bucketId, DateTime start, params string[] streamIds)
+        {
+            return ExecuteHooks(_original.GetStreamCommitsFrom(bucketId, start, streamIds));
+        }
+
         public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
         {
             throw new NotImplementedException();
