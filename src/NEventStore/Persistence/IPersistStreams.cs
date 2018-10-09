@@ -36,7 +36,18 @@ namespace NEventStore.Persistence
         IEnumerable<ICommit> GetFrom(string bucketId, DateTime start);
 
         IEnumerable<ICommit> GetStreams(string bucketId, params string[] streamIds);
-        
+
+        /// <summary>
+        ///     Gets all commits for the supplied steams that occured on or after the specified starting time.
+        /// </summary>
+        /// <param name="bucketId">The value which uniquely identifies bucket the stream belongs to.</param>
+        /// <param name="start">The point in time at which to start.</param>
+        /// <param name="streamIds">The streams to inspect.</param>
+        /// <returns>All commits that have occurred on or after the specified starting time.</returns>
+        /// <exception cref="StorageException" />
+        /// <exception cref="StorageUnavailableException" />
+        IEnumerable<ICommit> GetStreamCommitsFrom(string bucketId, DateTime start, params string[] streamIds);
+
         /// <summary>
         ///     Gets all commits after from the specified checkpoint. Use null to get from the beginning.
         /// </summary>

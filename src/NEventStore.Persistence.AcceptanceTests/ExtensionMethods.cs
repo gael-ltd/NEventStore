@@ -69,6 +69,25 @@ namespace NEventStore.Persistence.AcceptanceTests
                 messages);
         }
 
+        public static CommitAttempt BuildAttemptFromPrevious(this string streamId, ICommit previous, DateTime? now = null)
+        {
+            now = now ?? SystemTime.UtcNow;
+
+            var messages = new List<EventMessage>
+            {
+                new EventMessage {Body = new SomeDomainEvent {SomeProperty = "Test"}},
+                new EventMessage {Body = new SomeDomainEvent {SomeProperty = "Test2"}},
+            };
+
+            return new CommitAttempt(previous.BucketId, streamId,
+                2,
+                Guid.NewGuid(),
+                previous.CommitSequence+1,
+                now.Value,
+                new Dictionary<string, object> { { "A header", "A string value" }, { "Another header", 2 } },
+                messages);
+        }
+
         public static CommitAttempt BuildNextAttempt(this ICommit commit)
         {
             var messages = new List<EventMessage>

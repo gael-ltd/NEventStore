@@ -126,11 +126,28 @@ namespace NEventStore.Persistence.Sql
                     .Select(x => x.GetCommit(_serializer, _dialect));
             });
         }
-        
+
+        public IEnumerable<ICommit> GetStreamCommitsFrom(string bucketId, DateTime start, params string[] streamIds)
+        {
+            start = RoundDateToNearestSecond(start);
+            streamIds = streamIds.Select(_streamIdHasher.GetHash).ToArray();
+
+            Logger.Debug(Messages.GettingStreamsFrom, streamIds.Length, start.ToString("u"));
+            return ExecuteQuery(query =>
+            {
+                string statement = string.Format(_dialect.GetStreamCommitsFromInstant, bucketId, "('" + string.Join("','", streamIds) + "')");
+                query.AddParameter(_dialect.CommitSequence, 0);
+                query.AddParameter(_dialect.StreamRevision, int.MaxValue);
+                query.AddParameter(_dialect.CommitStamp, start);
+                return query
+                    .ExecutePagedQuery(statement, _dialect.NextPageDelegate)
+                    .Select(x => x.GetCommit(_serializer, _dialect));
+            });
+        }
+
         public virtual IEnumerable<ICommit> GetFrom(string bucketId, DateTime start)
         {
-            start = start.AddTicks(-(start.Ticks % TimeSpan.TicksPerSecond)); // Rounds down to the nearest second.
-            start = start < EpochTime ? EpochTime : start;
+            start = RoundDateToNearestSecond(start);
 
             Logger.Debug(Messages.GettingAllCommitsFrom, start, bucketId);
             return ExecuteQuery(query =>
@@ -573,6 +590,12 @@ namespace NEventStore.Persistence.Sql
                 }
                 return streamIdHash;
             }
+        }
+
+        private DateTime RoundDateToNearestSecond(DateTime start)
+        {
+            var returnDate = start.AddTicks(-(start.Ticks % TimeSpan.TicksPerSecond)); // Rounds down to the nearest second.
+            return returnDate < EpochTime ? EpochTime : returnDate;
         }
     }
 }

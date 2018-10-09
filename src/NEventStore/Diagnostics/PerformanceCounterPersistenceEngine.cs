@@ -73,6 +73,11 @@ namespace NEventStore.Diagnostics
             throw new NotImplementedException();
         }
 
+        public IEnumerable<ICommit> GetStreamCommitsFrom(string bucketId, DateTime start, params string[] streamIds)
+        {
+            return _persistence.GetStreamCommitsFrom(bucketId, start, streamIds);
+        }
+
         public IEnumerable<ICommit> GetAggregatesStreams(string bucketId, string streamIdOriginal)
         {
             throw new NotImplementedException();

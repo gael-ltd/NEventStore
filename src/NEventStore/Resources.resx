@@ -288,4 +288,7 @@
   <data name="DeletingStream" xml:space="preserve">
     <value>Deleting stream '{0}' from bucket '{1}'.</value>
   </data>
+  <data name="GettingStreamCommitsFrom" xml:space="preserve">
+    <value>Getting commits for {0} streams since {1}</value>
+  </data>
 </root>

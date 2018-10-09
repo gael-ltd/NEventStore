@@ -254,4 +254,15 @@ DELETE FROM Commits WHERE BucketId = @BucketId AND StreamId = @StreamId;</value>
     <value>DELETE FROM Snapshots WHERE BucketId =@BucketId AND StreamId IN {0};
 DELETE FROM Commits WHERE BucketId =@BucketId AND StreamId IN {0};</value>
   </data>
+  <data name="GetMultipleStreamCommitsFromInstant" xml:space="preserve">
+    <value>SELECT BucketId, StreamId, StreamIdOriginal, StreamRevision, CommitId, CommitSequence, CommitStamp,  CheckpointNumber, Headers, Payload
+  FROM Commits
+ WHERE BucketId = '{0}'
+   AND StreamId IN  {1}
+   AND StreamRevision &gt;= 0
+   AND (StreamRevision - Items) &lt; @StreamRevision
+   AND CommitSequence &gt; @CommitSequence
+   AND CommitStamp &gt;= @CommitStamp
+ ORDER BY CommitSequence</value>
+  </data>
 </root>
